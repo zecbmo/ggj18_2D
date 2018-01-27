@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameControls { Jump, Hit, FillWater }
+public enum GameControls { Jump, Hit, FillWater, Sprint }
 
-public class InputManager : MonoBehaviour {
+public static class InputManager  {
 
 
-    bool GetButtonDown(GameControls key, int controllerID)
+    public static bool GetButtonDown(GameControls key, int controllerID)
     {
 
         if (Input.GetButtonDown(BuildInputID(key, controllerID)))
@@ -18,7 +18,7 @@ public class InputManager : MonoBehaviour {
         return false;
     }
 
-    bool GetButtonUp(GameControls key, int controllerID)
+    public static bool GetButtonUp(GameControls key, int controllerID)
     {
         if (Input.GetButtonUp(BuildInputID(key, controllerID)))
         {
@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour {
         return false;
     }
 
-    bool GetButton(GameControls key, int controllerID)
+    public static bool GetButton(GameControls key, int controllerID)
     {
         if (Input.GetButton(BuildInputID(key, controllerID)))
         {
@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour {
         return false;
     }
 
-    string BuildInputID(GameControls key, int controllerID)
+    public static string BuildInputID(GameControls key, int controllerID)
     {
         return controllerID.ToString() + "_" + key.ToString();
     }

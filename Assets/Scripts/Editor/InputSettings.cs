@@ -50,10 +50,17 @@ public class InputSettings : EditorWindow
             UpdateControls();
         }
 
+        if (GUILayout.Button("Reset To Default"))
+        {
+            Reset();
+        }
+
+
     }
 
     void UpdateControls()
     {
+        Reset();
         for (int i = 0; i < noControllers; i++)
         {
             AddController(i);
@@ -75,14 +82,16 @@ public class InputSettings : EditorWindow
         //AxisCreationHelper(controller_id, Right_Trigger, 0);
 
     }
-
+    
 
     void AxisCreationHelper(int controller_id, GameControls control, int buttonID)
     {
         AddAxis(new InputAxis()
         {
             name = ammend(controller_id, control.ToString()),
-            positiveButton = JoyStickButton(buttonID)
+            positiveButton = JoyStickButton(buttonID),
+            joyNum = controller_id+1 //reset to zero
+
         });
     }
 
@@ -97,7 +106,9 @@ public class InputSettings : EditorWindow
         return "joystick button " + id.ToString();
     }
 
-    void RemoveOldInput()
+    
+
+    void Reset()
     {
         SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
         SerializedProperty axesProperty = serializedObject.FindProperty("m_Axes");
@@ -105,7 +116,7 @@ public class InputSettings : EditorWindow
         {
             defaultAxis = axesProperty;
         }
-        axesProperty.ClearArray();
+        axesProperty.arraySize = 18;
         serializedObject.ApplyModifiedProperties();
     }
 
