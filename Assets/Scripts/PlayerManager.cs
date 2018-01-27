@@ -8,10 +8,13 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField]
     private int noControllers = 4;
 
+    [SerializeField]
+    GameObject playerPrefab;
+
     private Dictionary<int, int> controllerMap = new Dictionary<int, int>();
     private int availablePlayerId = 0;
 
-    bool waitingNewPlayers = true;
+    public bool waitingNewPlayers = false;
 
     [SerializeField, Tooltip("for use when testing the main scene")]
     bool skip = false;
@@ -54,7 +57,9 @@ public class PlayerManager : Singleton<PlayerManager>
             {
                 if (!controllerMap.ContainsValue(i) && InputManager.GetButtonDown(GameControls.Sprint, i))
                 {
-                    EnterNewPlayer(i);
+                    
+                    Instantiate(playerPrefab);
+                    playerPrefab.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));
                 }
             }
         }
