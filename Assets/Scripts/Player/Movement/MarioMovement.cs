@@ -61,6 +61,15 @@ public class MarioMovement : MonoBehaviour
     [SerializeField, Range(0, 1.0f)]
     private float wallSlidingTime = 1.0f;
 
+    [SerializeField, Range(0, 1.0f)]
+    private float wallJumpControlDelay = 0.2f;
+    [SerializeField, Range(0, 500)]
+    private float wallJumpUpForce = 200f;
+    [SerializeField, Range(0, 500)]
+    private float wallJumpSideForce = 200f;
+    private float wallJumpTimeStamp = -1.0f;
+    private bool wallJumpedRight = true;
+
     private float wallSlideTimeStamp = -1.0f;
     private float wallSlideInitialVelocity = -1.0f;
 
@@ -114,7 +123,7 @@ public class MarioMovement : MonoBehaviour
         bool pressedHorizontal = Input.GetButtonDown("Horizontal");
 
 
-        if (jumpButtonDown && grounded)
+        if (jumpButtonDown && (grounded || touchingWall))
         {
             jumping = true;
             jumped = true;
@@ -141,61 +150,77 @@ public class MarioMovement : MonoBehaviour
     {
         grounded = IsGrounded();
         touchingWall = IsTouchingWall();
-
+        rigidBody.sharedMaterial.friction = 0.0f;
 
         float horizontalInput = Input.GetAxis("Horizontal");
         bool pressedTowardsWall = (horizontalInput > 0 && wallToTheRight) || (horizontalInput < 0 && !wallToTheRight);
 
+        bool inWallJumpDelay = (Time.time - wallJumpTimeStamp) < wallJumpControlDelay;
 
         /*
-        We input the horizontal speed that we desire based
-        on the state of movement we are in
+         This is in case we want to add more movement mechanics
+         that would keep the player from controlling the character.
+
+         E.g. a dash mechanic or some debuff.
          */
+        bool canMoveCharacter = (!inWallJumpDelay);
 
-        rigidBody.sharedMaterial.friction = 0.0f;
 
-        if (touchingWall &&
-            !grounded &&
-            pressedTowardsWall &&
-            !jumped &&
-            rigidBody.velocity.y < 0)
-        {
+        if (canMoveCharacter)
+        {   // --- MOVEMENT SECTION ---
+            if (touchingWall &&
+                !grounded &&
+                pressedTowardsWall &&
+                !jumped &&
+                rigidBody.velocity.y < 0)
+            {   // --- Wall Sliding ---
 
-            if (wallSliding == false)
-            {
-                wallSlideTimeStamp = Time.time;
-                wallSliding = true;
-                wallSlideInitialVelocity = rigidBody.velocity.y;
-            }
-            
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x,
-                Mathf.Lerp(wallSlideInitialVelocity,
-                wallSlidingTargetSpeed,
-                (Time.time - wallSlideTimeStamp) / wallSlidingTime));
-            
-        }
-        else
-        {
-            wallSliding = false;
-
-            if (Input.GetButton("Sprint") &&
-               Time.time - sprintTimeStamp > sprintDelay &&
-               grounded || jumpedOnSprint)
-            {
-                rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * sprintMultiplier * Time.deltaTime, rigidBody.velocity.y);
-
-                if (jumped)
+                if (wallSliding == false)
                 {
-                    jumpedOnSprint = true;
+                    wallSlideTimeStamp = Time.time;
+                    wallSliding = true;
+                    wallSlideInitialVelocity = rigidBody.velocity.y;
                 }
+
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x,
+                    Mathf.Lerp(wallSlideInitialVelocity,
+                    wallSlidingTargetSpeed,
+                    (Time.time - wallSlideTimeStamp) / wallSlidingTime));
+
             }
             else
             {
-                rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
+                wallSliding = false;
+
+
+                if (Input.GetButton("Sprint") &&
+                   Time.time - sprintTimeStamp > sprintDelay &&
+                   grounded || jumpedOnSprint)
+                {   // --- Sprinting Movement ---
+                    rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * sprintMultiplier * Time.deltaTime, rigidBody.velocity.y);
+
+                    if (jumped)
+                    {
+                        jumpedOnSprint = true;
+                    }
+                }
+                else
+                {   // --- Normal Movement ---
+                    rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
+                }
             }
         }
+        else {  // --- We can't control the character ---
 
+            if (inWallJumpDelay) {
+                rigidBody.velocity = new Vector2((wallJumpedRight ? 1 : -1) * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
+            }
 
+        }
+
+        /*
+         We update the position that we re looking towards
+         */
         bool currentLookingRight = (horizontalInput > 0);
         if (currentLookingRight != lookingRight && horizontalInput != 0)
         {
@@ -203,13 +228,27 @@ public class MarioMovement : MonoBehaviour
             lookingRight = currentLookingRight;
         }
 
-
         /*
-         We add the initial jumping force, this is the
-         "real" jump, the initial one.
+         We deal with the initial jumping forces in this section
          */
-        if (jumped)
-        {
+        if (touchingWall &&
+            !grounded &&
+            jumped)
+        {   // --- Wall Jumping ---
+            wallJumpTimeStamp = Time.time;
+
+            wallJumpedRight = !wallToTheRight;
+
+            rigidBody.AddForce(new Vector2( 0 /*(lookingRight) ? -wallJumpSideForce : wallJumpSideForce*/, wallJumpUpForce));
+            jumped = false;
+        }
+        else if (jumped)
+        {   // --- Normal Jumping ---
+            /*
+             We add the initial jumping force, this is the
+             "real" jump, the initial one.
+             */
+
             rigidBody.AddForce(new Vector2(0, initialJumpForce));
             jumped = false;
         }
@@ -218,7 +257,7 @@ public class MarioMovement : MonoBehaviour
          We add a bit of extra force if the button is still pressed.
          */
         if (jumping && (Time.time - jumpTimestamp) > delayForExtraForce && !wallSliding)
-        {
+        {   // --- Extra Jumping Force ---
             rigidBody.AddForce(new Vector2(0, extraJumpForce));
         }
 
@@ -227,7 +266,7 @@ public class MarioMovement : MonoBehaviour
          a multiplier to make the jump feel more Super Marioish.
          */
         if (rigidBody.velocity.y < 0 && !wallSliding)
-        {
+        {   // --- Falling with faster Gravity ---
             rigidBody.gravityScale = originalGravity * gravityMultiplier;
         }
         else

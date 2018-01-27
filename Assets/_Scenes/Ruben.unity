@@ -211,6 +211,26 @@ Prefab:
       propertyPath: wallSlidingTime
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallJumpSideForce
+      value: 137
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallJumpUpForce
+      value: 206
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallJumpControlDelay
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 50619909815666240, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f6bda6d6c9f622440b2efea68eccf59b, type: 2}
   m_IsPrefabParent: 0
