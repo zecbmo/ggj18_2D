@@ -37,6 +37,9 @@ public class MarioMovement : MonoBehaviour
     [SerializeField, Range(1, 5)]
     private float gravityMultiplier = 2.0f;
 
+    [SerializeField, Range(0, 20)]
+    private float maxVerticalVelocity = 10f;
+
     private bool jumping = false;
     private bool jumped = false;
     private float jumpTimestamp = -1.0f;
@@ -122,6 +125,7 @@ public class MarioMovement : MonoBehaviour
         bool jumpButtonUp = Input.GetButtonUp("Jump");
         bool pressedHorizontal = Input.GetButtonDown("Horizontal");
 
+        Debug.Log(rigidBody.velocity.y);
 
         if (jumpButtonDown && (grounded || touchingWall))
         {
@@ -272,6 +276,13 @@ public class MarioMovement : MonoBehaviour
         else
         {
             rigidBody.gravityScale = originalGravity;
+        }
+
+
+
+        if (Mathf.Abs(rigidBody.velocity.y) > maxVerticalVelocity) {
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x,
+                rigidBody.velocity.y > 0 ? maxVerticalVelocity : -maxVerticalVelocity);
         }
 
     }
