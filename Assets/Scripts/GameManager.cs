@@ -13,7 +13,6 @@ public class GameManager : Singleton<GameManager>
     [Header("Pre Game Settings")]
     [SerializeField]
     float gameStartDelay = 3.0f;
-    [SerializeField]
     float startDelayDivided = 0.0f;
 
     [Header("In Game Settings")]
@@ -22,10 +21,10 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Towers")]
     [SerializeField]
-    Tower redTower = null;
+    public Tower redTower = null;
 
     [SerializeField]
-    Tower blueTower = null;
+    public Tower blueTower = null;
 
 
     [Header("Pre Game UI")]

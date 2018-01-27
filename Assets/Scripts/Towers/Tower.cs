@@ -191,4 +191,9 @@ public class Tower : MonoBehaviour {
         yield return new WaitForSeconds(delayTime);
         canBeModified = newValue;
     }
+
+    public float GetPercentageFilled()
+    {
+        return percentageFilled;
+    }
 }

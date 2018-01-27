@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class EndScreen : MonoBehaviour {
@@ -36,7 +37,16 @@ public class EndScreen : MonoBehaviour {
     Vector3 blueScale;
     Vector3 redScale;
 
+    [Header("Text Options")]
+    [SerializeField]
+    string BlueWinsText = "Blue Wins";
+    [SerializeField]
+    string RedWinsText = "Red Wins";
+    [SerializeField]
+    string DrawText = "Draw Wins";
 
+    float bluePer = 0;
+    float redPer = 0;
 
     // Use this for initialization
     void Start ()
@@ -48,60 +58,134 @@ public class EndScreen : MonoBehaviour {
         redIndicator.transform.localScale = new Vector3(redScale.x, 0, redScale.z);
 
 
-        UpdateIndicator(blueIndicator, blueScale, 90.0f);
-        UpdateIndicator(redIndicator, redScale, 100.0f);
-        StartCoroutine(UpdateText(blueText, 90.0f, textIncreaseSpeed));
-        StartCoroutine(UpdateText(redText, 100.0f, textIncreaseSpeed));
+        bluePer = GameManager.Instance().blueTower.GetPercentageFilled();
+        redPer  = GameManager.Instance().redTower.GetPercentageFilled();
+
+        if (bluePer > redPer)
+        {
+            winnerText.text = BlueWinsText;
+        }
+        else if (bluePer == redPer)
+        {
+            winnerText.text = DrawText;
+
+        }
+        else
+        {
+            winnerText.text = RedWinsText;
+
+        }
+
+
+        UpdateIndicator(blueIndicator, blueScale, bluePer);
+        UpdateIndicator(redIndicator, redScale, redPer);
+        //StartCoroutine(UpdateText(blueText, bluePer, textIncreaseSpeed));
+       // StartCoroutine(UpdateText(redText, redPer, textIncreaseSpeed));
 
     }
 
+    float lastRedVal = 0;
+    float lastBlueVal = 0;
+    float curRedVal = 0;
+    float curBlueVal = 0;
+
+    bool doOnce = true;
+
+    private void Update()
+    {
+        curRedVal = UpdateText(redIndicator, redText, redScale.y);
+        curBlueVal =  UpdateText(blueIndicator, blueText, blueScale.y);
+
+        if (curRedVal == lastRedVal && lastBlueVal == curBlueVal)
+        {
+            if (doOnce)
+            {
+                StartCoroutine(ShowGameObject(winnerUI, winnerUIDelay));
+                StartCoroutine(ShowGameObject(finalUI, finalUIDelay));
+
+                doOnce = false;
+            }
+        }
+
+        lastBlueVal = curBlueVal;
+        lastRedVal = curRedVal;
+
+
+        if (!doOnce)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+
+            }
+        }
+
+
+    }
+
+
+
+    float UpdateText(GameObject indicator, Text text, float finalScale)
+    {
+        float curY = indicator.transform.localScale.y/finalScale * 100;
+        text.text = curY.ToString("F2");
+        
+
+        return curY;
+    }
+
     // Update is called once per frame
-    void UpdateIndicator(GameObject indicator, Vector3 finalScale, float percentageFilled)
+    float UpdateIndicator(GameObject indicator, Vector3 finalScale, float percentageFilled)
     {
         //get the percentage value of the currentScale
         float newY = (finalScale.y / 100.0f) * percentageFilled;
         Vector3 newScale = new Vector3(finalScale.x, newY, finalScale.z);
 
-        StartCoroutine(MathUtil.ScaleLerp(indicator, newScale, textIncreaseSpeed));
+        StartCoroutine(MathUtil.ScaleLerp(indicator, newScale, textIncreaseSpeed, true));
+        return newY;
     }
 
-    public IEnumerator UpdateText(Text objectToLerp, float percent, float speed)
-    {
-        float elapsedTime = 0;
+    //public IEnumerator UpdateText2(Text objectToLerp,  float percent, float newY)
+    //{
+    //    float elapsedTime = 0;
 
-        while (elapsedTime < 1)
-        {
-            objectToLerp.text = (Mathf.Lerp(0, percent, (elapsedTime / 1))).ToString("F2") + "%";
-            elapsedTime += (Time.deltaTime * speed) / percent * 40;
-            yield return new WaitForEndOfFrame();
-        }
+    //    while (elapsedTime < 1)
+    //    {
+    //        objectToLerp.text = (Mathf.Lerp(0, percent, (elapsedTime / 1))).ToString("F2") + "%";
+    //        elapsedTime += (Time.deltaTime * speed) / percent * 40;
+    //        yield return new WaitForEndOfFrame();
+    //    }
 
-        //float startTime = 0;
-        //float endTime = Time.time + textIncreaseSpeed;
+    //    //float startTime = 0;
+    //    //float endTime = Time.time + textIncreaseSpeed;
 
-        //while (Time.time < endTime)
-        //{
-        //    if (startTime < percent)
-        //    {
-        //        startTime += Time.deltaTime;
-        //    }
-        //    else
-        //    {
-        //        startTime = percent;
-        //    }
+    //    //while (Time.time < endTime)
+    //    //{
+    //    //    if (startTime < percent)
+    //    //    {
+    //    //        startTime += Time.deltaTime;
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        startTime = percent;
+    //    //    }
 
 
-        //    objectToLerp.text = startTime.ToString("F2") + "%";
+    //    //    objectToLerp.text = startTime.ToString("F2") + "%";
 
-        //    yield return new WaitForEndOfFrame();
-        //}
+    //    //    yield return new WaitForEndOfFrame();
+    //    //}
 
-        objectToLerp.text = percent.ToString("F2") + "%";
+    //    objectToLerp.text = percent.ToString("F2") + "%";
 
-        StartCoroutine(ShowGameObject(winnerUI, winnerUIDelay));
-        StartCoroutine(ShowGameObject(finalUI, finalUIDelay));
+    //    StartCoroutine(ShowGameObject(winnerUI, winnerUIDelay));
+    //    StartCoroutine(ShowGameObject(finalUI, finalUIDelay));
 
-    }
+    //}
 
     protected IEnumerator ShowGameObject(GameObject go, float delayTime)
     {

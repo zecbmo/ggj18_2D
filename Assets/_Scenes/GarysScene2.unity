@@ -791,9 +791,12 @@ MonoBehaviour:
   winnerUI: {fileID: 741357594}
   winnerText: {fileID: 2139632128}
   finalUI: {fileID: 1940422996}
-  winnerUIDelay: 2
-  finalUIDelay: 4
+  winnerUIDelay: 0.5
+  finalUIDelay: 1
   textIncreaseSpeed: 0.25
+  BlueWinsText: Blue Wins
+  RedWinsText: Red Wins
+  DrawText: Draw Wins
 --- !u!1001 &432054363
 Prefab:
   m_ObjectHideFlags: 0
@@ -1112,6 +1115,11 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114795537116612688, guid: daa76369cb956674e89884e55b28e0b3,
+        type: 2}
+      propertyPath: percentageFilled
+      value: 48.4545
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: daa76369cb956674e89884e55b28e0b3, type: 2}
@@ -1917,6 +1925,11 @@ Prefab:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114795537116612688, guid: daa76369cb956674e89884e55b28e0b3,
+        type: 2}
+      propertyPath: percentageFilled
+      value: 51
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: daa76369cb956674e89884e55b28e0b3, type: 2}
   m_IsPrefabParent: 0
@@ -2018,9 +2031,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doNotDestoryOnLoad: 1
   gameState: 0
-  gameStartDelay: 3
-  startDelayDivided: 0
-  gameLength: 10
+  gameStartDelay: 1
+  gameLength: 2
   redTower: {fileID: 1976532597}
   blueTower: {fileID: 1768536522}
   introUI: {fileID: 1236072710}
