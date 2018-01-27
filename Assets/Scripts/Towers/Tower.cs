@@ -25,10 +25,12 @@ public class Tower : MonoBehaviour {
     Vector3 fluidInidcatorStartingScale = Vector3.zero;
 
     //bool used to say if it can be modifeid or not
-    protected bool canBeModified = true;
+     protected bool canBeModified = true;
 
     //bool used to say if it can be modifeid or not
     protected bool canBeFilled = true;
+
+    protected bool fluidBeingRemoved = false;
 
     // Use this for initialization
     protected virtual void Start ()
@@ -41,11 +43,20 @@ public class Tower : MonoBehaviour {
 	// Update is called once per frame
 	protected virtual void Update ()
     {
+        fluidBeingRemoved = false;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            RemoveFluid(removeFluidSpeedModifier);
+        }
+
         UpdateVisualIndicator();
     }
 
     float AddFluid(float additionSpeed)
     {
+
+
         if (canBeFilled)
         {
             //change amount py positive value
@@ -57,6 +68,7 @@ public class Tower : MonoBehaviour {
 
     float RemoveFluid(float removalSpeed)
     {
+        fluidBeingRemoved = true;
         //remove fluid with a negative amount
         return ChangeFluidAmount(-removalSpeed, removeFluidSpeedModifier);
     }

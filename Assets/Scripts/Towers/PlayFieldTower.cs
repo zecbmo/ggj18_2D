@@ -7,6 +7,17 @@ public class PlayFieldTower : Tower
     [SerializeField, Tooltip("Visual Component of the Tower. Should be a child of the main game object")]
     GameObject visualObject = null;
 
+    [SerializeField]
+    ParticleSystem waterParticles = null;
+    ParticleSystem.EmissionModule emitter;
+    ParticleSystem.TrailModule trail;
+    Vector3 waterParticlesStartScale = Vector3.zero;
+    float waterStopSpeed = 5f;
+    bool waterCanBeStared = false;
+    bool waterHasBeenStopped = false;
+
+    
+
     [SerializeField, Tooltip("The visual component will move by this height when coming into play and going out of play")]
     float heightOffset = 5.0f;
 
@@ -28,8 +39,11 @@ public class PlayFieldTower : Tower
         canBeModified = false;
         StartCoroutine(SetCanBeModifed(true, delayBecomingAtStartTime));
 
-        //say it cant be filled as in game towers cant
-        canBeFilled = false;
+        emitter = waterParticles.emission;
+        trail = waterParticles.trails;
+        waterParticlesStartScale = waterParticles.gameObject.transform.localScale;
+         //say it cant be filled as in game towers cant
+         canBeFilled = false;
 
         //Set the acitive and off positions
         visualObjectActivePosition = visualObject.transform.localPosition;
@@ -47,9 +61,28 @@ public class PlayFieldTower : Tower
     {
         base.Update();
 
+        ManageWaterParticles();
+
         if (IsTowerEmpty())
         {
 
+        }
+    }
+
+    void ManageWaterParticles()
+    {
+
+        if (canBeModified && fluidBeingRemoved && !IsTowerEmpty())
+        {
+            waterParticles.gameObject.SetActive(true);
+            waterCanBeStared = true;
+            emitter.enabled = true;
+
+        }
+        else if (!waterHasBeenStopped && waterCanBeStared)
+        {
+            // waterParticles.Stop();
+            StartCoroutine(ScaleLerp(waterParticles.gameObject, new Vector3(0, 0, 0), waterStopSpeed));
         }
     }
 
@@ -60,6 +93,7 @@ public class PlayFieldTower : Tower
 
     public void HideTower(bool destroObjectWhenFinished = false)
     {
+        canBeModified = false;
         DestroyOptions destroyOptions = DestroyOptions.DontDestory;
 
         if (destroObjectWhenFinished)
@@ -71,6 +105,21 @@ public class PlayFieldTower : Tower
 
     }
 
+    public IEnumerator ScaleLerp(GameObject objectToLerp, Vector3 newScale, float speed)
+    {
+        float elapsedTime = 0;
+        Vector3 startingScale = objectToLerp.transform.localScale;
+        while (elapsedTime < 1)
+        {
+            objectToLerp.transform.localScale = Vector3.Lerp(startingScale, newScale, (elapsedTime / 1));
+            elapsedTime += Time.deltaTime * speed;
+            yield return new WaitForEndOfFrame();
+        }
+
+        waterParticles.gameObject.SetActive(false);
+        waterParticles.gameObject.transform.localScale = waterParticlesStartScale;
+
+    }
 
 
 }

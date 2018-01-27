@@ -36,8 +36,8 @@ public static class MathUtil
                 default:
                     break;
             }
-            
-            
+
+
 
         }
         else
@@ -64,6 +64,18 @@ public static class MathUtil
                 default:
                     break;
             }
-        }   
+        }
+    }
+
+    public static IEnumerator ScaleLerp(GameObject objectToLerp, Vector3 newScale, float speed)
+    {
+        float elapsedTime = 0;
+        Vector3 startingScale = objectToLerp.transform.localScale;
+        while (elapsedTime < 1)
+        {
+            objectToLerp.transform.localScale = Vector3.Lerp(startingScale, newScale, (elapsedTime / 1));
+            elapsedTime += Time.deltaTime * speed;
+            yield return new WaitForEndOfFrame();
+        }
     }
 }
