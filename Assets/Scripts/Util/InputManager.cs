@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameControls { Jump, Hit, FillWater, Sprint }
+public enum GameControls { Jump, Hit, FillWater, Sprint, None }
+public enum AxisContols { Horizontal, Vertical, None }
+
 
 public static class InputManager  {
 
@@ -38,7 +40,19 @@ public static class InputManager  {
         return false;
     }
 
+
+    public static float GetAxis(AxisContols axis, int controllerID)
+    {
+        return Input.GetAxis(BuildInputID(axis, controllerID));    
+        
+    }
+
     public static string BuildInputID(GameControls key, int controllerID)
+    {
+        return controllerID.ToString() + "_" + key.ToString();
+    }
+
+    public static string BuildInputID(AxisContols key, int controllerID)
     {
         return controllerID.ToString() + "_" + key.ToString();
     }

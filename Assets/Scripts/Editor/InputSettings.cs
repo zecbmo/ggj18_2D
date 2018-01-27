@@ -14,6 +14,12 @@ public class InputSettings : EditorWindow
     GameControls Right_Trigger = GameControls.FillWater;
     GameControls Left_Trigger = GameControls.FillWater;
 
+    AxisContols LeftStick_Y = AxisContols.Vertical;
+    AxisContols LeftStick_X = AxisContols.Horizontal;
+    AxisContols RightStick_Y = AxisContols.None;
+    AxisContols RightStick_X = AxisContols.None;
+
+
     string[] names = new string[] { "One", "Two", "Three", "Four" };
     int[] sizes = { 1, 2, 3, 4 };
 
@@ -52,7 +58,7 @@ public class InputSettings : EditorWindow
 
         if (GUILayout.Button("Reset To Default"))
         {
-            Reset();
+            ResetControls();
         }
 
 
@@ -60,7 +66,7 @@ public class InputSettings : EditorWindow
 
     void UpdateControls()
     {
-        Reset();
+        ResetControls();
         for (int i = 0; i < noControllers; i++)
         {
             AddController(i);
@@ -70,27 +76,46 @@ public class InputSettings : EditorWindow
     void AddController(int controller_id)
     {
         //Face Buttons
-        AxisCreationHelper(controller_id, A_Button, 0);
-        AxisCreationHelper(controller_id, B_Button, 1);
-        AxisCreationHelper(controller_id, X_Button, 2);
-        AxisCreationHelper(controller_id, Y_Button, 3);
+        ButtonCreationHelper(controller_id, A_Button, 0);
+        ButtonCreationHelper(controller_id, B_Button, 1);
+        ButtonCreationHelper(controller_id, X_Button, 2);
+        ButtonCreationHelper(controller_id, Y_Button, 3);
 
-        //Trigger Buttons
-        AxisCreationHelper(controller_id, Left_Bumper, 4);
-        AxisCreationHelper(controller_id, Right_Bumper, 5);
+        //Bumber buttons Buttons
+        ButtonCreationHelper(controller_id, Left_Bumper, 4);
+        ButtonCreationHelper(controller_id, Right_Bumper, 5);
         //AxisCreationHelper(controller_id, Left_Trigger, 0);
         //AxisCreationHelper(controller_id, Right_Trigger, 0);
 
-    }
-    
+        //Sticks
+        AxisCreationHelper(controller_id, LeftStick_X, 1);
+        AxisCreationHelper(controller_id, LeftStick_Y, 2);
 
-    void AxisCreationHelper(int controller_id, GameControls control, int buttonID)
+
+    }
+
+
+    void ButtonCreationHelper(int controller_id, GameControls control, int buttonID)
+    {
+       
+        AddAxis(new InputAxis()
+        {
+            name = ammend(controller_id, control.ToString()),     
+            positiveButton = JoyStickButton(buttonID),
+            joyNum = controller_id + 1 //reset to zero
+
+        });
+        
+    }
+
+    void AxisCreationHelper(int controller_id, AxisContols control, int axisID)
     {
         AddAxis(new InputAxis()
         {
             name = ammend(controller_id, control.ToString()),
-            positiveButton = JoyStickButton(buttonID),
-            joyNum = controller_id+1 //reset to zero
+            axis = axisID,
+            joyNum = controller_id + 1, //reset to zero
+            type = AxisType.JoystickAxis
 
         });
     }
@@ -108,7 +133,7 @@ public class InputSettings : EditorWindow
 
     
 
-    void Reset()
+    void ResetControls()
     {
         SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
         SerializedProperty axesProperty = serializedObject.FindProperty("m_Axes");
