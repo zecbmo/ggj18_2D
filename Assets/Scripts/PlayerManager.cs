@@ -13,6 +13,17 @@ public class PlayerManager : Singleton<PlayerManager>
 
     bool waitingNewPlayers = true;
 
+    [SerializeField, Tooltip("for use when testing the main scene")]
+    bool skip = false;
+
+    private void Start()
+    {
+        if(skip)
+        {
+            EnterNewPlayer(0);
+        }
+    }
+
     public int GetNoControllers()
     {
         return noControllers;
