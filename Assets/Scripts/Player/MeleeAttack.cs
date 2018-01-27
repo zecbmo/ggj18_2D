@@ -10,6 +10,7 @@ public class MeleeAttack : MonoBehaviour
     float meleeAttackDuration;
 
     Collider2D meleeAttackCollider;
+    SpriteRenderer weaponSpriteRenderer;
     MarioMovement marioMovement;
     bool attacking;
     Vector2 weaponPosition;
@@ -19,12 +20,16 @@ public class MeleeAttack : MonoBehaviour
         meleeAttackCollider = GetComponent<Collider2D>();
         Assert.IsNotNull(meleeAttackCollider);
 
+        weaponSpriteRenderer = GetComponent<SpriteRenderer>();
+        Assert.IsNotNull(weaponSpriteRenderer);
+
         marioMovement = transform.parent.GetComponent<MarioMovement>();
         Assert.IsNotNull(marioMovement);
     }
 
     void Start()
     {
+        weaponSpriteRenderer.enabled = false;
         weaponPosition = transform.localPosition;    
     }
 
@@ -52,6 +57,7 @@ public class MeleeAttack : MonoBehaviour
 
         // Enable melee collider
         meleeAttackCollider.enabled = true;
+        weaponSpriteRenderer.enabled = true;
         attacking = true;
 
         while (Time.time - startTime < meleeAttackDuration)
@@ -61,6 +67,7 @@ public class MeleeAttack : MonoBehaviour
 
         // Disable it after the duration
         meleeAttackCollider.enabled = false;
+        weaponSpriteRenderer.enabled = false;
         attacking = false;
     }
 
