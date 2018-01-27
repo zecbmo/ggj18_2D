@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Shooting : MonoBehaviour
 {
@@ -19,31 +20,37 @@ public class Shooting : MonoBehaviour
     [SerializeField]
     float weaponAngle;
 
-    [SerializeField]
+    MarioMovement marioMovement;
+
     float currentAngle;
-    
-    [SerializeField]
-    Vector2 vector;
+    Ray shootingRay;
+
+    void Awake()
+    {
+        marioMovement = transform.parent.GetComponent<MarioMovement>();
+        Assert.IsNotNull(marioMovement);
+    }
 
     void Start()
     {
-        
+        UpdateWeaponAngle();
+
     }
 
     void Update()
     {
+
         if (Input.GetButton("Fire1"))
         {
             float deltaPressure = Time.deltaTime * pressureGrowthSpeed;
             weaponPressure = Mathf.Lerp(0, maximumPressure, (weaponPressure + deltaPressure) / maximumPressure);
-
-            currentAngle = weaponAngle * (1 - weaponPressure / maximumPressure);
-            vector = Quaternion.AngleAxis(currentAngle, Vector3.forward) * vector;
+            UpdateWeaponAngle();
         }
         else if (Input.GetButtonUp("Fire1"))
         {
             StartCoroutine(StopShootingCoroutine());
         }
+
         
     }
 
@@ -59,14 +66,41 @@ public class Shooting : MonoBehaviour
             {
                 break;
             }
+
             float deltaPressure = (Time.time - startTime) * pressureLossSpeed;
 
             weaponPressure = Mathf.Lerp(initialPressure, 0, deltaPressure / initialPressure);
 
-            currentAngle = weaponAngle * (1 - weaponPressure / maximumPressure);
-            vector = Quaternion.AngleAxis(currentAngle, Vector3.forward) * vector;
+            UpdateWeaponAngle();
 
             yield return false;
         }
+    }
+
+    void UpdateWeaponAngle()
+    {
+        Vector3 vector = new Vector3();
+        currentAngle = -weaponAngle * (1 - weaponPressure / maximumPressure);
+        vector.z = currentAngle;
+        transform.eulerAngles = vector;
+
+        UpdateShootingRay();
+    }
+
+    void UpdateShootingRay()
+    {
+        float radians = currentAngle * Mathf.Deg2Rad;
+        int sign = marioMovement.IsLookingRight() ? 1 : -1;
+        Vector2 weaponPosition = transform.localPosition;
+        weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
+        transform.localPosition = weaponPosition;
+        shootingRay = new Ray(transform.position, new Vector3(Mathf.Cos(radians) * sign, Mathf.Sin(radians), 0));
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+        Gizmos.DrawRay(shootingRay);
     }
 }
