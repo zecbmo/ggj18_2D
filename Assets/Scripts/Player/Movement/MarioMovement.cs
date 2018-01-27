@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class MarioMovement : MonoBehaviour
 {
-
+    
 
     [Header("Horizontal movement parameters")]
     [SerializeField, Range(0, 500)]
@@ -93,7 +93,8 @@ public class MarioMovement : MonoBehaviour
     [Header("Other parameters")]
     [SerializeField]
     private LayerMask groundedLayerMask;
-
+    [SerializeField]
+    private int controllerId = 0;
 
 
 
@@ -121,11 +122,9 @@ public class MarioMovement : MonoBehaviour
 
     private void Update()
     {
-        bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, 0);
-        bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, 0);
-        bool pressedHorizontal = Input.GetButtonDown("Horizontal");
-
-        Debug.Log(rigidBody.velocity.y);
+        bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, controllerId);
+        bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, controllerId);
+        bool pressedHorizontal = InputManager.GetButtonDown(AxisControls.Horizontal, controllerId);
 
         if (jumpButtonDown && (grounded || touchingWall))
         {
@@ -156,7 +155,7 @@ public class MarioMovement : MonoBehaviour
         touchingWall = IsTouchingWall();
         rigidBody.sharedMaterial.friction = 0.0f;
 
-        float horizontalInput = InputManager.GetAxis(AxisContols.Horizontal, 0);
+        float horizontalInput = InputManager.GetAxis(AxisControls.Horizontal, controllerId);
         bool pressedTowardsWall = (horizontalInput > 0 && wallToTheRight) || (horizontalInput < 0 && !wallToTheRight);
 
         bool inWallJumpDelay = (Time.time - wallJumpTimeStamp) < wallJumpControlDelay;
@@ -197,7 +196,7 @@ public class MarioMovement : MonoBehaviour
                 wallSliding = false;
 
 
-                if (InputManager.GetButton(GameControls.Sprint, 0) &&
+                if (InputManager.GetButton(GameControls.Sprint, controllerId) &&
                    Time.time - sprintTimeStamp > sprintDelay &&
                    grounded || jumpedOnSprint)
                 {   // --- Sprinting Movement ---
@@ -290,6 +289,11 @@ public class MarioMovement : MonoBehaviour
     public bool IsLookingRight()
     {
         return lookingRight;
+    }
+
+    public int GetControllerId()
+    {
+        return controllerId;
     }
 
     public bool IsGrounded()

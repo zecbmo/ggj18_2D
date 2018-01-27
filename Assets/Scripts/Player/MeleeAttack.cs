@@ -35,7 +35,7 @@ public class MeleeAttack : MonoBehaviour
 
     void Update()
     {
-        if (InputManager.GetButtonDown(GameControls.Hit, 0))
+        if (InputManager.GetButtonDown(GameControls.Hit, marioMovement.GetControllerId()))
         {
             PerformMeleeAttack();
         }

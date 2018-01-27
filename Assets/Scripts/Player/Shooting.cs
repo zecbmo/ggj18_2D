@@ -40,13 +40,13 @@ public class Shooting : MonoBehaviour
     void Update()
     {
 
-        if (InputManager.GetButton(GameControls.Hit, 0))
+        if (InputManager.GetButton(GameControls.Hit, marioMovement.GetControllerId()))
         {
             float deltaPressure = Time.deltaTime * pressureGrowthSpeed;
             weaponPressure = Mathf.Lerp(0, maximumPressure, (weaponPressure + deltaPressure) / maximumPressure);
             UpdateWeaponAngle();
         }
-        else if (InputManager.GetButtonUp(GameControls.Hit, 0))
+        else if (InputManager.GetButtonUp(GameControls.Hit, marioMovement.GetControllerId()))
         {
             StartCoroutine(StopShootingCoroutine());
         }
@@ -62,7 +62,7 @@ public class Shooting : MonoBehaviour
 
         while (weaponPressure > 0f)
         {
-            if (InputManager.GetButton(GameControls.Hit, 0))
+            if (InputManager.GetButton(GameControls.Hit, marioMovement.GetControllerId()))
             {
                 break;
             }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameControls { Jump, Hit, FillWater, Sprint, None }
-public enum AxisContols { Horizontal, Vertical, None }
+public enum AxisControls { Horizontal, Vertical, None }
 
 
 public static class InputManager  {
@@ -13,6 +13,17 @@ public static class InputManager  {
     {
 
         if (Input.GetButtonDown(BuildInputID(key, controllerID)))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool GetButtonDown(AxisControls axis, int controllerID)
+    {
+
+        if (Input.GetButtonDown(BuildInputID(axis, controllerID)))
         {
             return true;
         }
@@ -41,7 +52,7 @@ public static class InputManager  {
     }
 
 
-    public static float GetAxis(AxisContols axis, int controllerID)
+    public static float GetAxis(AxisControls axis, int controllerID)
     {
         return Input.GetAxis(BuildInputID(axis, controllerID));    
         
@@ -52,7 +63,7 @@ public static class InputManager  {
         return controllerID.ToString() + "_" + key.ToString();
     }
 
-    public static string BuildInputID(AxisContols key, int controllerID)
+    public static string BuildInputID(AxisControls key, int controllerID)
     {
         return controllerID.ToString() + "_" + key.ToString();
     }

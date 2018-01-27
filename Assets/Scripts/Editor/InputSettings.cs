@@ -5,19 +5,21 @@ using UnityEditor;
 
 public class InputSettings : EditorWindow
 {
-    GameControls A_Button = GameControls.Jump;
+    GameControls A_Button = GameControls.Sprint;
     GameControls B_Button = GameControls.Hit;
-    GameControls X_Button = GameControls.Sprint;
+    GameControls X_Button = GameControls.Jump;
     GameControls Y_Button = GameControls.FillWater;
-    GameControls Right_Bumper = GameControls.Jump;
-    GameControls Left_Bumper = GameControls.Hit;
-    GameControls Right_Trigger = GameControls.FillWater;
-    GameControls Left_Trigger = GameControls.FillWater;
+    GameControls Right_Bumper = GameControls.Hit;
+    GameControls Left_Bumper = GameControls.Sprint;
+    GameControls Right_Trigger = GameControls.Hit;
+    GameControls Left_Trigger = GameControls.Sprint;
 
-    AxisContols LeftStick_Y = AxisContols.Vertical;
-    AxisContols LeftStick_X = AxisContols.Horizontal;
-    AxisContols RightStick_Y = AxisContols.None;
-    AxisContols RightStick_X = AxisContols.None;
+    AxisControls LeftStick_Y = AxisControls.Vertical;
+    AxisControls LeftStick_X = AxisControls.Horizontal;
+    AxisControls RightStick_Y = AxisControls.None;
+    AxisControls RightStick_X = AxisControls.None;
+    AxisControls DPad_X = AxisControls.Horizontal;
+    AxisControls DPad_Y = AxisControls.Vertical;
 
 
     string[] names = new string[] { "One", "Two", "Three", "Four" };
@@ -61,12 +63,24 @@ public class InputSettings : EditorWindow
             ResetControls();
         }
 
+        if (GUILayout.Button("Delete all inputs"))
+        {
+            DeleteControls();
+        }
 
+    }
+
+    void DeleteControls()
+    {
+        SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
+        SerializedProperty axesProperty = serializedObject.FindProperty("m_Axes");
+        axesProperty.arraySize = 0;
+        serializedObject.ApplyModifiedProperties();
     }
 
     void UpdateControls()
     {
-        ResetControls();
+        //ResetControls();
         for (int i = 0; i < noControllers; i++)
         {
             AddController(i);
@@ -91,24 +105,26 @@ public class InputSettings : EditorWindow
         AxisCreationHelper(controller_id, LeftStick_X, 1);
         AxisCreationHelper(controller_id, LeftStick_Y, 2);
 
+        AxisCreationHelper(controller_id, DPad_X, 6);
+        AxisCreationHelper(controller_id, DPad_Y, 7);
 
     }
 
 
     void ButtonCreationHelper(int controller_id, GameControls control, int buttonID)
     {
-       
+
         AddAxis(new InputAxis()
         {
-            name = ammend(controller_id, control.ToString()),     
-            positiveButton = JoyStickButton(buttonID),
+            name = ammend(controller_id, control.ToString()),
+            positiveButton = JoyStickButton(buttonID, controller_id + 1),
             joyNum = controller_id + 1 //reset to zero
 
         });
-        
+
     }
 
-    void AxisCreationHelper(int controller_id, AxisContols control, int axisID)
+    void AxisCreationHelper(int controller_id, AxisControls control, int axisID)
     {
         AddAxis(new InputAxis()
         {
@@ -128,12 +144,12 @@ public class InputSettings : EditorWindow
         return id.ToString() + "_" + b;
     }
 
-    string JoyStickButton(int id)
+    string JoyStickButton(int id, int joystickId)
     {
-        return "joystick button " + id.ToString();
+        return "joystick " + joystickId  + " button " + id.ToString();
     }
 
-    
+
 
     void ResetControls()
     {
@@ -153,7 +169,7 @@ public class InputSettings : EditorWindow
         MouseMovement = 1,
         JoystickAxis = 2
     };
-  
+
     public class InputAxis
     {
         public string name;
@@ -208,7 +224,7 @@ public class InputSettings : EditorWindow
 
     private static void AddAxis(InputAxis axis)
     {
-        if (AxisDefined(axis.name)) return;
+        //if (AxisDefined(axis.name)) return;
 
         SerializedObject serializedObject = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0]);
         SerializedProperty axesProperty = serializedObject.FindProperty("m_Axes");
