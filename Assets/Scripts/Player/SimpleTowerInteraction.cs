@@ -5,7 +5,8 @@ using UnityEngine;
 public class SimpleTowerInteraction : MonoBehaviour
 {
     TowerCollisionHelper collisionObject = null;
-
+    [SerializeField]
+    PlayerContainer container = null;
 
     enum WhatCollisonType { RemovingWater, AddingWater};
     WhatCollisonType type = WhatCollisonType.RemovingWater;
@@ -13,21 +14,37 @@ public class SimpleTowerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (collisionObject && Input.GetKey(KeyCode.X))
+        if (collisionObject && InputManager.GetButton(GameControls.FillWater, 0))
         {
             switch (type)
             {
                 case WhatCollisonType.RemovingWater:
-                    collisionObject.RemoveWater(5);
+                    {
+                        container.AddFluid(5);
+                        collisionObject.RemoveWater(5);
+                        container.fluidBeingRemoved = false;                       
+                    }
                     break;
                 case WhatCollisonType.AddingWater:
-                    collisionObject.AddWater(5);
+                    {
+                        collisionObject.AddWater(5);
+                        container.RemoveFluid(5);
+                        container.fluidBeingRemoved = true;
+
+                    }
                     break;
                 default:
                     break;
             }
             
         }
+        else if (collisionObject)
+        {
+            collisionObject.ResetWaterAnim();
+            container.fluidBeingRemoved = false;
+
+        }
+
     }
 
 
@@ -51,11 +68,23 @@ public class SimpleTowerInteraction : MonoBehaviour
 
         if (collision.gameObject.tag == "RemovableArea")
         {
-            collisionObject = null;
+            if (collisionObject)
+            {
+                collisionObject.ResetWaterAnim();
+                container.fluidBeingRemoved = false;
+
+                collisionObject = null;
+            }
         }
         else if (collision.gameObject.tag == "AdditionArea")
         {
-            collisionObject = null;
+            if (collisionObject)
+            {
+                collisionObject.ResetWaterAnim();
+                container.fluidBeingRemoved = false;
+
+                collisionObject = null;
+            }
         }
     }
 

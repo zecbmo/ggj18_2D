@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class TowerManager : MonoBehaviour
+public class TowerManager : Singleton<TowerManager>
 {
     //[Header("Tower Settings")]
     //[SerializeField]
@@ -102,6 +102,11 @@ public class TowerManager : MonoBehaviour
             tower.HideTower(true);
         }
         activeTowers.Clear();
+    }
+
+    public void EndGame()
+    {
+        RemoveActiveTowers();
     }
 
 

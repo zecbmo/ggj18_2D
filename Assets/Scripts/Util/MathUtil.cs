@@ -67,15 +67,26 @@ public static class MathUtil
         }
     }
 
-    public static IEnumerator ScaleLerp(GameObject objectToLerp, Vector3 newScale, float speed)
+    public static IEnumerator ScaleLerp(GameObject objectToLerp, Vector3 newScale, float speed, bool constSpeed = false)
     {
         float elapsedTime = 0;
         Vector3 startingScale = objectToLerp.transform.localScale;
         while (elapsedTime < 1)
         {
             objectToLerp.transform.localScale = Vector3.Lerp(startingScale, newScale, (elapsedTime / 1));
-            elapsedTime += Time.deltaTime * speed;
+
+            if (constSpeed)
+            {
+                elapsedTime += (Time.deltaTime * speed) / Vector3.Distance(startingScale, newScale);
+            }
+            else
+            {
+                elapsedTime += Time.deltaTime * speed;
+            }
             yield return new WaitForEndOfFrame();
         }
+
+        objectToLerp.transform.localScale = newScale;
+
     }
 }

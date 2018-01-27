@@ -20,4 +20,8 @@ public class TowerCollisionHelper : MonoBehaviour
         return tower.AddFluid(speed);
     }
 
+    public void ResetWaterAnim()
+    {
+        tower.fluidBeingRemoved = false;
+    }
 }

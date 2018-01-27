@@ -40,7 +40,7 @@ public class Tower : MonoBehaviour {
     //bool used to say if it can be modifeid or not
     protected bool canBeFilled = true;
 
-    protected bool fluidBeingRemoved = false;
+    public bool fluidBeingRemoved = false;
 
     // Use this for initialization
     protected virtual void Start ()
@@ -59,8 +59,7 @@ public class Tower : MonoBehaviour {
 	// Update is called once per frame
 	protected virtual void Update ()
     {
-      
-
+        
         ManageWaterParticles();
         UpdateVisualIndicator();
 
@@ -74,7 +73,8 @@ public class Tower : MonoBehaviour {
 
     private void LateUpdate()
     {
-        fluidBeingRemoved = false;
+       
+
     }
 
     public float AddFluid(float additionSpeed)
