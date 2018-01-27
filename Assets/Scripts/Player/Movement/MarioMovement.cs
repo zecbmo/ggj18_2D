@@ -94,7 +94,9 @@ public class MarioMovement : MonoBehaviour
     [SerializeField]
     private LayerMask groundedLayerMask;
     [SerializeField]
-    private int controllerId = 0;
+    private int playerId = 0;
+
+    private int controllerId = -1;
 
 
     private bool inKnockback = false;
@@ -124,6 +126,12 @@ public class MarioMovement : MonoBehaviour
 
     private void Update()
     {
+
+        if (controllerId < 0)
+        {
+            controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
+            return;
+        }
         bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, controllerId);
         bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, controllerId);
         bool pressedHorizontal = InputManager.GetButtonDown(AxisControls.Horizontal, controllerId);
@@ -153,6 +161,11 @@ public class MarioMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (controllerId < 0)
+        {
+            controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
+            return;
+        }
         grounded = IsGrounded();
         touchingWall = IsTouchingWall();
         rigidBody.sharedMaterial.friction = 0.0f;
@@ -299,7 +312,12 @@ public class MarioMovement : MonoBehaviour
 
     public int GetControllerId()
     {
-        return controllerId;
+        return PlayerManager.Instance().GetControllerByPlayerId(playerId);
+    }
+
+    public void SetPlayerId(int id)
+    {
+        playerId = id;
     }
 
     public bool IsGrounded()

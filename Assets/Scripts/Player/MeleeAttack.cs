@@ -35,12 +35,15 @@ public class MeleeAttack : MonoBehaviour
     void Start()
     {
         weaponSpriteRenderer.enabled = false;
-        weaponPosition = transform.localPosition;    
+        weaponPosition = transform.localPosition;
     }
 
     void Update()
     {
-
+        if (marioMovement.GetControllerId() < 0)
+        {
+            return;
+        }
         if (InputManager.GetButtonDown(GameControls.Hit, marioMovement.GetControllerId()))
         {
             PerformMeleeAttack();

@@ -21,9 +21,6 @@ public class ReceiveDamage : MonoBehaviour, IHittable
 
     public void OnHit(GameObject otherObject)
     {
-        Debug.Log("[" + gameObject.name + "] Got hit by \"" + otherObject.name + "\"");
-
-        
         marioMovement.ApplyKnockback(new Vector2((otherObject.transform.position.x > this.transform.position.x)
             ? -knockbackForce.x : knockbackForce.x, knockbackForce.y),
             knockbackTime);
