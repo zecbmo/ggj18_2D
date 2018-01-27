@@ -56,12 +56,27 @@ public class MarioMovement : MonoBehaviour
     private bool jumpedOnSprint = false;
 
     [Header("Wall jumping parameters")]
-    [SerializeField, Range(0, 500)]
-    private float wallSlidingSpeed = 200f;
+    [SerializeField, Range(0, -1.0f)]
+    private float wallSlidingTargetSpeed = -0.2f;
+    [SerializeField, Range(0, 1.0f)]
+    private float wallSlidingTime = 1.0f;
+
+    private float wallSlideTimeStamp = -1.0f;
+    private float wallSlideInitialVelocity = -1.0f;
 
     private bool touchingWall = false;
     private bool wallSliding = false;
     private bool wallToTheRight = true;
+
+    /*
+     
+     @@DOING: Apply a force up and out from the wall
+     if you are sliding and you press jump. Use a timer
+     to keep the player from changing directions too quickly
+     so it can actually go up from the wall.
+         
+     */
+
 
     [Header("Other parameters")]
     [SerializeField]
@@ -126,7 +141,6 @@ public class MarioMovement : MonoBehaviour
     {
         grounded = IsGrounded();
         touchingWall = IsTouchingWall();
-        wallSliding = false;
 
 
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -137,38 +151,53 @@ public class MarioMovement : MonoBehaviour
         We input the horizontal speed that we desire based
         on the state of movement we are in
          */
-         
+
+        rigidBody.sharedMaterial.friction = 0.0f;
+
         if (touchingWall &&
             !grounded &&
             pressedTowardsWall &&
             !jumped &&
             rigidBody.velocity.y < 0)
         {
-            
-            wallSliding = true;
 
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, -wallSlidingSpeed * Time.deltaTime);
-
-        }
-        else if (Input.GetButton("Sprint") &&
-            Time.time - sprintTimeStamp > sprintDelay &&
-            grounded || jumpedOnSprint)
-        {
-                rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * sprintMultiplier * Time.deltaTime, rigidBody.velocity.y);
-
-            if (jumped)
+            if (wallSliding == false)
             {
-                jumpedOnSprint = true;
+                wallSlideTimeStamp = Time.time;
+                wallSliding = true;
+                wallSlideInitialVelocity = rigidBody.velocity.y;
             }
+            
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x,
+                Mathf.Lerp(wallSlideInitialVelocity,
+                wallSlidingTargetSpeed,
+                (Time.time - wallSlideTimeStamp) / wallSlidingTime));
+            
         }
         else
         {
+            wallSliding = false;
+
+            if (Input.GetButton("Sprint") &&
+               Time.time - sprintTimeStamp > sprintDelay &&
+               grounded || jumpedOnSprint)
+            {
+                rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * sprintMultiplier * Time.deltaTime, rigidBody.velocity.y);
+
+                if (jumped)
+                {
+                    jumpedOnSprint = true;
+                }
+            }
+            else
+            {
                 rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
+            }
         }
 
 
-        bool currentLookingRight = (rigidBody.velocity.x > 0);
-        if (currentLookingRight != lookingRight && rigidBody.velocity.x != 0)
+        bool currentLookingRight = (horizontalInput > 0);
+        if (currentLookingRight != lookingRight && horizontalInput != 0)
         {
             switchedDirections = true;
             lookingRight = currentLookingRight;

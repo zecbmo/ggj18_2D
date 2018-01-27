@@ -191,6 +191,26 @@ Prefab:
       propertyPath: initialJumpForce
       value: 375
       objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallSlidingSpeed
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallSlidingGravityMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallSlidingTargetSpeed
+      value: -0.117
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362390578555962, guid: f6bda6d6c9f622440b2efea68eccf59b,
+        type: 2}
+      propertyPath: wallSlidingTime
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f6bda6d6c9f622440b2efea68eccf59b, type: 2}
   m_IsPrefabParent: 0
