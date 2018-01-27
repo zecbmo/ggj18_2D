@@ -35,7 +35,7 @@ public class MeleeAttack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (InputManager.GetButtonDown(GameControls.Hit, 0))
         {
             PerformMeleeAttack();
         }
