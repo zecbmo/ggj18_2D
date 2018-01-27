@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 2d36cf66c1ef9974884b1d97a6eff2f0
 folderAsset: yes
 timeCreated: 1517003025
+=======
+guid: ce10956cc81fc5142aca2d6f8796cff2
+folderAsset: yes
+timeCreated: 1517002852
+>>>>>>> Feat_CreatingTowers
 licenseType: Free
 DefaultImporter:
   externalObjects: {}
