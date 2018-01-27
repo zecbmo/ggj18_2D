@@ -17,9 +17,13 @@ TagManager:
   - 
   - 
   - Floor
+<<<<<<< HEAD
   - WaterTower
-  - HitBox
+  - 
+=======
+  - Hitbox
   - Hurtbox
+>>>>>>> origin/player
   - 
   - 
   - 

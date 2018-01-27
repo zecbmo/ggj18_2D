@@ -10,11 +10,27 @@ public class MeleeAttack : MonoBehaviour
     float meleeAttackDuration;
 
     Collider2D meleeAttackCollider;
+    SpriteRenderer weaponSpriteRenderer;
+    MarioMovement marioMovement;
+    bool attacking;
+    Vector2 weaponPosition;
 
     void Awake()
     {
         meleeAttackCollider = GetComponent<Collider2D>();
         Assert.IsNotNull(meleeAttackCollider);
+
+        weaponSpriteRenderer = GetComponent<SpriteRenderer>();
+        Assert.IsNotNull(weaponSpriteRenderer);
+
+        marioMovement = transform.parent.GetComponent<MarioMovement>();
+        Assert.IsNotNull(marioMovement);
+    }
+
+    void Start()
+    {
+        weaponSpriteRenderer.enabled = false;
+        weaponPosition = transform.localPosition;    
     }
 
     void Update()
@@ -27,7 +43,12 @@ public class MeleeAttack : MonoBehaviour
 
     void PerformMeleeAttack()
     {
-        StartCoroutine(MeleeAttackCoroutine());
+        if (!attacking)
+        {
+            weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
+            transform.localPosition = weaponPosition;
+            StartCoroutine(MeleeAttackCoroutine());
+        }
     }
 
     IEnumerator MeleeAttackCoroutine()
@@ -36,6 +57,8 @@ public class MeleeAttack : MonoBehaviour
 
         // Enable melee collider
         meleeAttackCollider.enabled = true;
+        weaponSpriteRenderer.enabled = true;
+        attacking = true;
 
         while (Time.time - startTime < meleeAttackDuration)
         {
@@ -44,12 +67,14 @@ public class MeleeAttack : MonoBehaviour
 
         // Disable it after the duration
         meleeAttackCollider.enabled = false;
+        weaponSpriteRenderer.enabled = false;
+        attacking = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        IHittable otherIHittable = collision.gameObject.GetComponent<IHittable>();
-        if (otherIHittable != null)
+        IHittable otherIHittable = collider.gameObject.GetComponent<IHittable>();
+        if (otherIHittable != null && collider.transform.parent != transform.parent)
         {
             otherIHittable.OnHit(gameObject);
         }
