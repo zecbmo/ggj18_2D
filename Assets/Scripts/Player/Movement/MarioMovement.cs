@@ -121,8 +121,8 @@ public class MarioMovement : MonoBehaviour
 
     private void Update()
     {
-        bool jumpButtonDown = Input.GetButtonDown("Jump");
-        bool jumpButtonUp = Input.GetButtonUp("Jump");
+        bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, 0);
+        bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, 0);
         bool pressedHorizontal = Input.GetButtonDown("Horizontal");
 
         Debug.Log(rigidBody.velocity.y);
@@ -156,7 +156,7 @@ public class MarioMovement : MonoBehaviour
         touchingWall = IsTouchingWall();
         rigidBody.sharedMaterial.friction = 0.0f;
 
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = InputManager.GetAxis(AxisContols.Horizontal, 0);
         bool pressedTowardsWall = (horizontalInput > 0 && wallToTheRight) || (horizontalInput < 0 && !wallToTheRight);
 
         bool inWallJumpDelay = (Time.time - wallJumpTimeStamp) < wallJumpControlDelay;
@@ -197,7 +197,7 @@ public class MarioMovement : MonoBehaviour
                 wallSliding = false;
 
 
-                if (Input.GetButton("Sprint") &&
+                if (InputManager.GetButton(GameControls.Sprint, 0) &&
                    Time.time - sprintTimeStamp > sprintDelay &&
                    grounded || jumpedOnSprint)
                 {   // --- Sprinting Movement ---

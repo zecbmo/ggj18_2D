@@ -7,7 +7,7 @@ public class InputSettings : EditorWindow
 {
     GameControls A_Button = GameControls.Jump;
     GameControls B_Button = GameControls.Hit;
-    GameControls X_Button = GameControls.FillWater;
+    GameControls X_Button = GameControls.Sprint;
     GameControls Y_Button = GameControls.FillWater;
     GameControls Right_Bumper = GameControls.Jump;
     GameControls Left_Bumper = GameControls.Hit;
@@ -115,8 +115,10 @@ public class InputSettings : EditorWindow
             name = ammend(controller_id, control.ToString()),
             axis = axisID,
             joyNum = controller_id + 1, //reset to zero
-            type = AxisType.JoystickAxis
-
+            type = AxisType.JoystickAxis,
+            gravity = 0,
+            dead = 0.19f,
+            sensitivity = 1
         });
     }
 
