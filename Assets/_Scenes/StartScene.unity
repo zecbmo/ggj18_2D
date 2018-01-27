@@ -456,6 +456,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doNotDestoryOnLoad: 1
   noControllers: 4
+  playerPrefab: {fileID: 1950183907285014, guid: 03d5b34bf38043b46b9bcd03560716d7,
+    type: 2}
 --- !u!4 &2079801675
 Transform:
   m_ObjectHideFlags: 0

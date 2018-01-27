@@ -34,7 +34,7 @@ public class StartScreen : MonoBehaviour
                 // Debug.Log("GO Team " + hoveredTeam.ToString());
 
                 PlayerManager.Instance().EnterNewPlayer(i);
-
+                PlayerManager.Instance().waitingNewPlayers = true;
                 SceneManager.LoadScene("Ruben");
             }
         }
