@@ -100,7 +100,7 @@ public class Shooting : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+
         Gizmos.DrawRay(shootingRay);
     }
 }
