@@ -9,11 +9,16 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField]
     float meleeAttackDuration;
 
+    [SerializeField]
+    float meleeAttackCooldown;
+
+
     Collider2D meleeAttackCollider;
     SpriteRenderer weaponSpriteRenderer;
     MarioMovement marioMovement;
-    bool attacking;
     Vector2 weaponPosition;
+    bool attackOnCooldown = false;
+    bool attacking;
 
     void Awake()
     {
@@ -30,12 +35,16 @@ public class MeleeAttack : MonoBehaviour
     void Start()
     {
         weaponSpriteRenderer.enabled = false;
-        weaponPosition = transform.localPosition;    
+        weaponPosition = transform.localPosition;
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (marioMovement.GetControllerId() < 0)
+        {
+            return;
+        }
+        if (InputManager.GetButtonDown(GameControls.Hit, marioMovement.GetControllerId()))
         {
             PerformMeleeAttack();
         }
@@ -43,27 +52,30 @@ public class MeleeAttack : MonoBehaviour
 
     void PerformMeleeAttack()
     {
-        if (!attacking)
+        if (!attacking && !attackOnCooldown && marioMovement.GetCanMoveCharacter())
         {
             weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
             transform.localPosition = weaponPosition;
             StartCoroutine(MeleeAttackCoroutine());
+            StartCoroutine(MeleeAttackCooldown(meleeAttackCooldown));
         }
+    }
+
+    IEnumerator MeleeAttackCooldown(float cooldown)
+    {
+        attackOnCooldown = true;
+        yield return new WaitForSeconds(cooldown);
+        attackOnCooldown = false;
     }
 
     IEnumerator MeleeAttackCoroutine()
     {
-        float startTime = Time.time; // Change this if we use custom Time class
-
         // Enable melee collider
         meleeAttackCollider.enabled = true;
         weaponSpriteRenderer.enabled = true;
         attacking = true;
 
-        while (Time.time - startTime < meleeAttackDuration)
-        {
-            yield return false;
-        }
+        yield return new WaitForSeconds(meleeAttackDuration);
 
         // Disable it after the duration
         meleeAttackCollider.enabled = false;

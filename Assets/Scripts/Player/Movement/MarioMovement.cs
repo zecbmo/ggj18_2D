@@ -93,9 +93,14 @@ public class MarioMovement : MonoBehaviour
     [Header("Other parameters")]
     [SerializeField]
     private LayerMask groundedLayerMask;
+    [SerializeField]
+    private int playerId = 0;
+
+    private int controllerId = -1;
 
 
-
+    private bool inKnockback = false;
+    private bool canMoveCharacter = true;
 
     /// <summary>
     /// The rigid body we a trying to move
@@ -121,11 +126,15 @@ public class MarioMovement : MonoBehaviour
 
     private void Update()
     {
-        bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, 0);
-        bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, 0);
-        bool pressedHorizontal = Input.GetButtonDown("Horizontal");
 
-        Debug.Log(rigidBody.velocity.y);
+        if (controllerId < 0)
+        {
+            controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
+            return;
+        }
+        bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, controllerId);
+        bool jumpButtonUp = InputManager.GetButtonUp(GameControls.Jump, controllerId);
+        bool pressedHorizontal = InputManager.GetButtonDown(AxisControls.Horizontal, controllerId);
 
         if (jumpButtonDown && (grounded || touchingWall))
         {
@@ -152,11 +161,16 @@ public class MarioMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (controllerId < 0)
+        {
+            controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
+            return;
+        }
         grounded = IsGrounded();
         touchingWall = IsTouchingWall();
         rigidBody.sharedMaterial.friction = 0.0f;
 
-        float horizontalInput = InputManager.GetAxis(AxisContols.Horizontal, 0);
+        float horizontalInput = InputManager.GetAxis(AxisControls.Horizontal, controllerId);
         bool pressedTowardsWall = (horizontalInput > 0 && wallToTheRight) || (horizontalInput < 0 && !wallToTheRight);
 
         bool inWallJumpDelay = (Time.time - wallJumpTimeStamp) < wallJumpControlDelay;
@@ -167,7 +181,8 @@ public class MarioMovement : MonoBehaviour
 
          E.g. a dash mechanic or some debuff.
          */
-        bool canMoveCharacter = (!inWallJumpDelay);
+        canMoveCharacter = (!inWallJumpDelay &&
+                                    !inKnockback);
 
 
         if (canMoveCharacter)
@@ -197,7 +212,7 @@ public class MarioMovement : MonoBehaviour
                 wallSliding = false;
 
 
-                if (InputManager.GetButton(GameControls.Sprint, 0) &&
+                if (InputManager.GetButton(GameControls.Sprint, controllerId) &&
                    Time.time - sprintTimeStamp > sprintDelay &&
                    grounded || jumpedOnSprint)
                 {   // --- Sprinting Movement ---
@@ -214,9 +229,11 @@ public class MarioMovement : MonoBehaviour
                 }
             }
         }
-        else {  // --- We can't control the character ---
+        else
+        {  // --- We can't control the character ---
 
-            if (inWallJumpDelay) {
+            if (inWallJumpDelay)
+            {
                 rigidBody.velocity = new Vector2((wallJumpedRight ? 1 : -1) * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
             }
 
@@ -243,7 +260,7 @@ public class MarioMovement : MonoBehaviour
 
             wallJumpedRight = !wallToTheRight;
 
-            rigidBody.AddForce(new Vector2( 0 /*(lookingRight) ? -wallJumpSideForce : wallJumpSideForce*/, wallJumpUpForce));
+            rigidBody.AddForce(new Vector2(0 /*(lookingRight) ? -wallJumpSideForce : wallJumpSideForce*/, wallJumpUpForce));
             jumped = false;
         }
         else if (jumped)
@@ -280,7 +297,8 @@ public class MarioMovement : MonoBehaviour
 
 
 
-        if (Mathf.Abs(rigidBody.velocity.y) > maxVerticalVelocity) {
+        if (Mathf.Abs(rigidBody.velocity.y) > maxVerticalVelocity)
+        {
             rigidBody.velocity = new Vector2(rigidBody.velocity.x,
                 rigidBody.velocity.y > 0 ? maxVerticalVelocity : -maxVerticalVelocity);
         }
@@ -290,6 +308,16 @@ public class MarioMovement : MonoBehaviour
     public bool IsLookingRight()
     {
         return lookingRight;
+    }
+
+    public int GetControllerId()
+    {
+        return PlayerManager.Instance().GetControllerByPlayerId(playerId);
+    }
+
+    public void SetPlayerId(int id)
+    {
+        playerId = id;
     }
 
     public bool IsGrounded()
@@ -356,6 +384,22 @@ public class MarioMovement : MonoBehaviour
         return result;
     }
 
+    public void ApplyKnockback(Vector2 force, float time)
+    {
+        rigidBody.AddForce(force);
+        StartCoroutine(KnockbackCoroutine(time));
+    }
+
+    IEnumerator KnockbackCoroutine(float time)
+    {
+        inKnockback = true;
+        yield return new WaitForSeconds(time);
+        inKnockback = false;
+    }
+
+    public bool GetCanMoveCharacter() {
+        return canMoveCharacter;
+    }
 
     /*
      @@TODO: If there is time.
