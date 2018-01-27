@@ -21,6 +21,16 @@ public class Tower : MonoBehaviour {
     [SerializeField,Tooltip("This objects pivot point should be at its bottom fior scaling")]
     GameObject fluidInidcator = null;
 
+    [Header("Water Particles for draining")]
+    [SerializeField]
+    ParticleSystem waterParticles = null;
+    ParticleSystem.EmissionModule emitter;
+    ParticleSystem.TrailModule trail;
+    Vector3 waterParticlesStartScale = Vector3.zero;
+    float waterStopSpeed = 5f;
+    bool waterCanBeStared = false;
+    bool waterHasBeenStopped = false;
+
     //mesured in Y axis only
     Vector3 fluidInidcatorStartingScale = Vector3.zero;
 
@@ -38,22 +48,36 @@ public class Tower : MonoBehaviour {
         //set the max scale as is in the scene view
         fluidInidcatorStartingScale = fluidInidcator.transform.localScale;
 
+
+        emitter = waterParticles.emission;
+        trail = waterParticles.trails;
+        waterParticlesStartScale = waterParticles.gameObject.transform.localScale;
+      
+
     }
 	
 	// Update is called once per frame
 	protected virtual void Update ()
     {
-        fluidBeingRemoved = false;
+      
 
-        if (Input.GetKey(KeyCode.Space))
+        ManageWaterParticles();
+        UpdateVisualIndicator();
+
+        if (Input.GetKey(KeyCode.V))
         {
-            RemoveFluid(removeFluidSpeedModifier);
+           /// RemoveFluid(removeFluidSpeedModifier);
         }
 
-        UpdateVisualIndicator();
+
     }
 
-    float AddFluid(float additionSpeed)
+    private void LateUpdate()
+    {
+        fluidBeingRemoved = false;
+    }
+
+    public float AddFluid(float additionSpeed)
     {
 
 
@@ -66,7 +90,7 @@ public class Tower : MonoBehaviour {
         return 0.0f;
     }
 
-    float RemoveFluid(float removalSpeed)
+    public float RemoveFluid(float removalSpeed)
     {
         fluidBeingRemoved = true;
         //remove fluid with a negative amount
@@ -125,6 +149,42 @@ public class Tower : MonoBehaviour {
     {
         canBeModified = newValue;
     }
+
+
+    void ManageWaterParticles()
+    {
+
+        if (canBeModified && fluidBeingRemoved && !IsTowerEmpty())
+        {
+            waterParticles.gameObject.SetActive(true);
+            waterCanBeStared = true;
+            emitter.enabled = true;
+
+        }
+        else if (!waterHasBeenStopped && waterCanBeStared)
+        {
+            // waterParticles.Stop();
+            StartCoroutine(ScaleLerp(waterParticles.gameObject, new Vector3(0, 0, 0), waterStopSpeed));
+        }
+    }
+
+
+    public IEnumerator ScaleLerp(GameObject objectToLerp, Vector3 newScale, float speed)
+    {
+        float elapsedTime = 0;
+        Vector3 startingScale = objectToLerp.transform.localScale;
+        while (elapsedTime < 1)
+        {
+            objectToLerp.transform.localScale = Vector3.Lerp(startingScale, newScale, (elapsedTime / 1));
+            elapsedTime += Time.deltaTime * speed;
+            yield return new WaitForEndOfFrame();
+        }
+
+        waterParticles.gameObject.SetActive(false);
+        waterParticles.gameObject.transform.localScale = waterParticlesStartScale;
+
+    }
+
 
     protected IEnumerator SetCanBeModifed(bool newValue, float delayTime)
     {

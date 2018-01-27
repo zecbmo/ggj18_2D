@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeamTower : MonoBehaviour
+public class TeamTower : Tower
 {
-
-
-
-	// Use this for initialization
-	void Start ()
+    protected override void Start ()
     {
-		
+        base.Start();
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    protected override void Update ()
     {
-		
-	}
+        base.Update();
+    }
 
 
 }
