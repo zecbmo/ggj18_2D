@@ -129,7 +129,6 @@ public class MarioMovement : MonoBehaviour
 
         if (controllerId < 0)
         {
-            controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
             return;
         }
         bool jumpButtonDown = InputManager.GetButtonDown(GameControls.Jump, controllerId);
@@ -164,7 +163,14 @@ public class MarioMovement : MonoBehaviour
         if (controllerId < 0)
         {
             controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
-            return;
+            if (controllerId < 0)
+            {
+                return;
+            }
+
+//            GetComponent<Renderer>().enabled = true;
+            
+
         }
         grounded = IsGrounded();
         touchingWall = IsTouchingWall();
@@ -397,7 +403,8 @@ public class MarioMovement : MonoBehaviour
         inKnockback = false;
     }
 
-    public bool GetCanMoveCharacter() {
+    public bool GetCanMoveCharacter()
+    {
         return canMoveCharacter;
     }
 
