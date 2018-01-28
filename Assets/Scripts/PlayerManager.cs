@@ -46,7 +46,7 @@ public class PlayerManager : Singleton<PlayerManager>
             {
                 if (!controllerMap.ContainsValue(i) && InputManager.GetButtonDown(GameControls.Sprint, i))
                 {
-                    
+                    EnterNewPlayer(i);
                     Instantiate(playerPrefab);
                     playerPrefab.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));
                 }
