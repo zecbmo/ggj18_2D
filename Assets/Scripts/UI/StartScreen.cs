@@ -35,7 +35,7 @@ public class StartScreen : MonoBehaviour
 
                 PlayerManager.Instance().EnterNewPlayer(i);
                 PlayerManager.Instance().waitingNewPlayers = true;
-                SceneManager.LoadScene("Ruben");
+                SceneManager.LoadScene("GarysScene2");
             }
         }
     }
