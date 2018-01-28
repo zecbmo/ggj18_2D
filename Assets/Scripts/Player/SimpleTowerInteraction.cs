@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class SimpleTowerInteraction : MonoBehaviour
 {
@@ -8,13 +9,20 @@ public class SimpleTowerInteraction : MonoBehaviour
     [SerializeField]
     PlayerContainer container = null;
 
-    enum WhatCollisonType { RemovingWater, AddingWater};
+    MarioMovement marioMovement;
+
+    enum WhatCollisonType { RemovingWater, AddingWater };
     WhatCollisonType type = WhatCollisonType.RemovingWater;
 
+    private void Start()
+    {
+        marioMovement = GetComponent<MarioMovement>();
+        Assert.IsNotNull(marioMovement);
+    }
 
     private void Update()
     {
-        if (collisionObject && InputManager.GetButton(GameControls.FillWater, 0))
+        if (collisionObject && InputManager.GetButton(GameControls.FillWater, marioMovement.GetControllerId()))
         {
             switch (type)
             {
@@ -22,7 +30,7 @@ public class SimpleTowerInteraction : MonoBehaviour
                     {
                         container.AddFluid(5);
                         collisionObject.RemoveWater(5);
-                        container.fluidBeingRemoved = false;                       
+                        container.fluidBeingRemoved = false;
                     }
                     break;
                 case WhatCollisonType.AddingWater:
@@ -36,7 +44,7 @@ public class SimpleTowerInteraction : MonoBehaviour
                 default:
                     break;
             }
-            
+
         }
         else if (collisionObject)
         {
