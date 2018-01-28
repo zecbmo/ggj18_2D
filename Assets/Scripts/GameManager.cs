@@ -62,6 +62,8 @@ public class GameManager : Singleton<GameManager>
     float timerObjectOffset = 5;
     [SerializeField]
     float timerMoveInSpeed = 5;
+    [SerializeField]
+    float respawnTime = 2.0f;
 
     [Header("Post Game UI")]
     [SerializeField]
@@ -203,6 +205,29 @@ public class GameManager : Singleton<GameManager>
     void MoveTimerObjectToPoint(Vector3 newlocation)
     {
         StartCoroutine(MathUtil.MoveObjectTowardsLocation(timerText.gameObject.transform.parent.gameObject, newlocation, timerMoveInSpeed, 0, true));
+    }
+
+    public void RespawnPlayer(GameObject player)
+    {
+        player.transform.position = new Vector3(17, 12,1973);
+        //player.SetActive(false);
+        StartCoroutine(RespawnPlease(player, respawnTime));
+
+    }
+
+    IEnumerator RespawnPlease(GameObject player, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        //player.SetActive(true);
+
+        int rand = Random.Range(0, 2);
+
+        if (rand == 0)
+            MoveToRandomSpawn(player, redSpawns);
+        else
+            MoveToRandomSpawn(player, blueSpawns);
+
     }
 }
 

@@ -196,4 +196,12 @@ public class Tower : MonoBehaviour {
     {
         return percentageFilled;
     }
+    public void RemoveHardAmount(float amount)
+    {
+        percentageFilled -= amount;
+        if (percentageFilled < 0)
+        {
+            percentageFilled = 0;
+        }
+    }
 }

@@ -36,12 +36,18 @@ public class SimpleTowerInteraction : MonoBehaviour
 
         if (collisionObject && InputManager.GetButton(GameControls.FillWater, player.controllerId))
         {
+
+
             dribleSFX.volume = AudioManager.Instance().MasterVolume * AudioManager.Instance().SXFVolume * dribbleVolume;
 
             switch (type)
             {
                 case WhatCollisonType.RemovingWater:
                     {
+                        if (container.GetPercentageFilled() >= 99)
+                        {
+                            return;
+                        }
                         container.AddFluid(5);
                         collisionObject.RemoveWater(5);
                         container.fluidBeingRemoved = false;

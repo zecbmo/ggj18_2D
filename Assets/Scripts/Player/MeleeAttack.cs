@@ -73,6 +73,13 @@ public class MeleeAttack : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        meleeAttackCollider.enabled = false;
+        weaponMeshRenderer.enabled = false;
+        attacking = false;
+    }
+
     IEnumerator MeleeAttackCooldown(float cooldown)
     {
         attackOnCooldown = true;
