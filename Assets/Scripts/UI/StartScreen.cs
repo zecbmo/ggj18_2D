@@ -33,11 +33,17 @@ public class StartScreen : MonoBehaviour
                 // Go to scene and assign player 1 to controller i
                 // Debug.Log("GO Team " + hoveredTeam.ToString());
 
-                PlayerManager.Instance().EnterNewPlayer(i);
+                //PlayerManager.Instance().EnterNewPlayer(i);
                 PlayerManager.Instance().waitingNewPlayers = true;
-                SceneManager.LoadScene("GarysScene2");
+                //SceneManager.LoadScene("GarysScene2");
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("GarysScene2");
+        }
+
     }
 
     void UpdateController(Team team)

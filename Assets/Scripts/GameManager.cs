@@ -65,6 +65,9 @@ public class GameManager : Singleton<GameManager>
         startDelayDivided = gameStartDelay / 3.0f;
         StartCoroutine(ChangeIntroTextAndRepeat(startingText, startDelayDivided, 0));
 
+        PlayerManager.Instance().SpawnPlayers();
+
+
     }
 	
 	// Update is called once per frame

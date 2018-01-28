@@ -1167,6 +1167,10 @@ Prefab:
       propertyPath: m_Name
       value: CharacterCOMPLETE_FINAL_1
       objectReference: {fileID: 0}
+    - target: {fileID: 1950183907285014, guid: 03d5b34bf38043b46b9bcd03560716d7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 03d5b34bf38043b46b9bcd03560716d7, type: 2}
   m_IsPrefabParent: 0
@@ -2745,10 +2749,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doNotDestoryOnLoad: 1
-  noControllers: 1
-  playerPrefab: {fileID: 0}
-  waitingNewPlayers: 0
-  skip: 1
+  noControllers: 4
+  playerPrefab: {fileID: 1950183907285014, guid: 03d5b34bf38043b46b9bcd03560716d7,
+    type: 2}
+  waitingNewPlayers: 1
+  skip: 0
 --- !u!4 &1836942221
 Transform:
   m_ObjectHideFlags: 0

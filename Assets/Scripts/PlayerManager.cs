@@ -25,6 +25,8 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             EnterNewPlayer(0);
         }
+        
+
     }
 
     public int GetNoControllers()
@@ -57,11 +59,29 @@ public class PlayerManager : Singleton<PlayerManager>
             {
                 if (!controllerMap.ContainsValue(i) && InputManager.GetButtonDown(GameControls.Sprint, i))
                 {
-                    EnterNewPlayer(i);
-                    Instantiate(playerPrefab);
-                    playerPrefab.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));
+                    GameObject go = Instantiate(playerPrefab);
+                    go.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));
                 }
             }
         }
     }
+
+    public List<GameObject> SpawnPlayers()
+    {
+        List<GameObject> returnList = new List<GameObject>();
+
+        for (int i = 0; i < availablePlayerId; ++i)
+        {           
+
+            GameObject go = Instantiate(playerPrefab);
+            go.GetComponent<MarioMovement>().SetPlayerId(i);
+            returnList.Add(go);
+
+
+        }
+
+        return returnList;
+    }
+
+ 
 }
