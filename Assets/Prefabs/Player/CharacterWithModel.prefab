@@ -128,6 +128,9 @@ GameObject:
   - component: {fileID: 114979929327622588}
   - component: {fileID: 114623253648413098}
   - component: {fileID: 114217648350133610}
+  - component: {fileID: 82876854006364290}
+  - component: {fileID: 82390911438030440}
+  - component: {fileID: 114309172598416618}
   m_Layer: 12
   m_Name: CharacterWithModel
   m_TagString: Untagged
@@ -739,6 +742,166 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5842136, y: 0.32620493}
   m_EdgeRadius: 0
+--- !u!82 &82390911438030440
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1338434389274800}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: eeccb97a8bbd1424ba3ec3bbcb11344d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &82876854006364290
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1338434389274800}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: cde735880b6187d4790b7ef1a0561974, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95933982299355802
 Animator:
   serializedVersion: 3
@@ -867,6 +1030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackForce: {x: 200, y: 200}
   knockbackTime: 1
+  HitSFX: {fileID: 8300000, guid: c5e36916ee6c5ed4b880cfe2b5b7f623, type: 3}
 --- !u!114 &114156780084896520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -899,6 +1063,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4880
   skinWidth: 0.1
+--- !u!114 &114309172598416618
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1338434389274800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f44cf2459f6d44096ce8a28a35b022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rends:
+  - {fileID: 23685355731940226}
+  testColour: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &114514448234078572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -912,6 +1090,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeAttackDuration: 0.1
   meleeAttackCooldown: 0.3
+  punchAttemptSFX: {fileID: 8300000, guid: 5f8deb4c6a931284e88952a101f72f6b, type: 3}
+  punchSFXModulation: 0.2
 --- !u!114 &114623253648413098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -965,10 +1145,20 @@ MonoBehaviour:
   wallJumpControlDelay: 0.2
   wallJumpUpForce: 200
   wallJumpSideForce: 200
+  jumpSFX: {fileID: 8300000, guid: 7649aceca54d9a0429fd8228c9a4b195, type: 3}
+  hitSFX: {fileID: 8300000, guid: 5f8deb4c6a931284e88952a101f72f6b, type: 3}
+  moveSFX: {fileID: 8300000, guid: cde735880b6187d4790b7ef1a0561974, type: 3}
+  fillingWaterSFX: {fileID: 0}
+  loosingWaterSFX: {fileID: 0}
+  jumpModulation: 0.2
+  hitModulation: 0.2
+  moveVolume: 0.5
+  audio: {fileID: 82876854006364290}
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 256
   playerId: 0
+  controllerId: -1
 --- !u!114 &114979929327622588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -981,6 +1171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 114623253648413098}
+  bubbleSFX: {fileID: 8300000, guid: 604402e07746ef0428fcb3ac58eb8913, type: 3}
+  dribleSFX: {fileID: 82390911438030440}
+  dribbleVolume: 1
 --- !u!198 &198383761211295680
 ParticleSystem:
   m_ObjectHideFlags: 1
