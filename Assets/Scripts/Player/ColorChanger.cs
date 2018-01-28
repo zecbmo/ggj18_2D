@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class ColorChanger : MonoBehaviour {
 
+    [SerializeField]
     MeshRenderer[] rends = null;
+
+    [SerializeField]
+    Color testColour = Color.red;
 
     private void Start()
     {
-        ChangeColor(Color.red);
+        //ChangeColor(testColour);
     }
 
     public void ChangeColor(Color color)
     {
         for (int i = 0; i < rends.Length; i++)
         {
-            rends[i].material.SetColor(0, color);
+            rends[i].material.color = color;
         }
     }
 }

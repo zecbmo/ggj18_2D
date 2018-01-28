@@ -39,6 +39,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     public Tower blueTower = null;
 
+    [SerializeField]
+    public GameObject[] redSpawns;
+    [SerializeField]
+    public GameObject[] blueSpawns;
+
 
     [Header("Pre Game UI")]
     [SerializeField]
@@ -79,7 +84,7 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(ChangeIntroTextAndRepeat(startingText, startDelayDivided, 0));
 
         List<GameObject> newPlayers =  PlayerManager.Instance().SpawnPlayers();
-
+        SetUpTeams(newPlayers);
 
     }
 
@@ -90,10 +95,11 @@ public class GameManager : Singleton<GameManager>
             //on red team
             if (i % 2 == 0)
             {
-
+                AddPlayerToTeam(players[i], TeamColor.Red);
             }
             else //on blue team
             {
+                AddPlayerToTeam(players[i], TeamColor.Blue);
 
             }
         }
@@ -101,21 +107,43 @@ public class GameManager : Singleton<GameManager>
 
     void AddPlayerToTeam(GameObject player, TeamColor color)
     {
+        ColorChanger changer = player.GetComponent<ColorChanger>();
+
         switch (color)
         {
             case TeamColor.Red:
                 {
-                    
+                    changer.ChangeColor(redColours[redCount]);
+                    redCount++;
+                    if (redCount > redColours.Length)
+                    {
+                        redCount = 0;
+                    }
+                    MoveToRandomSpawn(player, redSpawns);
                 }
                 break;
             case TeamColor.Blue:
                 {
+                    changer.ChangeColor(blueColors[blueCount]);
+                    blueCount++;
+                    if (blueCount > blueColors.Length)
+                    {
+                        blueCount = 0;
+                    }
+                    MoveToRandomSpawn(player, blueSpawns);
 
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    void MoveToRandomSpawn(GameObject player, GameObject[] spawns)
+    {
+        int rand = Random.Range(0, spawns.Length);
+        player.transform.position = spawns[rand].transform.position;
+
     }
 
 
