@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 
 public enum GameState {PreGame, InGame, EndGame };
+public enum TeamColor { Red, Blue };
+
 
 public class GameManager : Singleton<GameManager>
 {
@@ -17,13 +19,12 @@ public class GameManager : Singleton<GameManager>
 
     [Header("TeamColors")]
     [SerializeField]
-    Color redColourOne = Color.red;
+    Color[] redColours = new Color[4] { Color.red, Color.red, Color.red, Color.red };
     [SerializeField]
-    Color redColourTwo = Color.red;
-    [SerializeField]
-    Color blueColourOne = Color.blue;
-    [SerializeField]
-    Color blueColourTwo = Color.blue;
+    Color[] blueColors = new Color[4] { Color.blue, Color.blue, Color.blue, Color.blue };
+    int redCount = 0;
+    int blueCount = 0;
+
 
 
 
@@ -84,9 +85,38 @@ public class GameManager : Singleton<GameManager>
 
     void SetUpTeams(List<GameObject> players)
     {
+        for (int i = 0; i < players.Count; i++)
+        {
+            //on red team
+            if (i % 2 == 0)
+            {
 
+            }
+            else //on blue team
+            {
+
+            }
+        }
     }
 
+    void AddPlayerToTeam(GameObject player, TeamColor color)
+    {
+        switch (color)
+        {
+            case TeamColor.Red:
+                {
+                    
+                }
+                break;
+            case TeamColor.Blue:
+                {
+
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
 
 	// Update is called once per frame
