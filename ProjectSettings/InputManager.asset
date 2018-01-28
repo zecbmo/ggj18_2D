@@ -6,7 +6,7 @@ InputManager:
   serializedVersion: 2
   m_Axes:
   - serializedVersion: 3
-    m_Name: 0_Sprint
+    m_Name: 0_Jump
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -38,7 +38,7 @@ InputManager:
     axis: -1
     joyNum: 1
   - serializedVersion: 3
-    m_Name: 0_Jump
+    m_Name: 0_Sprint
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -166,7 +166,7 @@ InputManager:
     axis: 6
     joyNum: 1
   - serializedVersion: 3
-    m_Name: 1_Sprint
+    m_Name: 1_Jump
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -198,7 +198,7 @@ InputManager:
     axis: -1
     joyNum: 2
   - serializedVersion: 3
-    m_Name: 1_Jump
+    m_Name: 1_Sprint
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -326,7 +326,7 @@ InputManager:
     axis: 6
     joyNum: 2
   - serializedVersion: 3
-    m_Name: 2_Sprint
+    m_Name: 2_Jump
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -358,7 +358,7 @@ InputManager:
     axis: -1
     joyNum: 3
   - serializedVersion: 3
-    m_Name: 2_Jump
+    m_Name: 2_Sprint
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -486,7 +486,7 @@ InputManager:
     axis: 6
     joyNum: 3
   - serializedVersion: 3
-    m_Name: 3_Sprint
+    m_Name: 3_Jump
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -518,7 +518,7 @@ InputManager:
     axis: -1
     joyNum: 4
   - serializedVersion: 3
-    m_Name: 3_Jump
+    m_Name: 3_Sprint
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 

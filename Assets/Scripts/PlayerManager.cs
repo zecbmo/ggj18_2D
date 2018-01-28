@@ -56,11 +56,17 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (waitingNewPlayers)
         {
             for (int i = 0; i < noControllers; ++i)
             {
-                if (!controllerMap.ContainsValue(i) && InputManager.GetButtonDown(GameControls.Sprint, i))
+                if (!controllerMap.ContainsValue(i) && InputManager.GetButtonDown(GameControls.Jump, i))
                 {
                     GameObject go = Instantiate(playerPrefab);
                     go.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));

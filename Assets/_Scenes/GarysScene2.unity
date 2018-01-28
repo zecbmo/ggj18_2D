@@ -1817,6 +1817,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 1016341045}
+  bubbleSFX: {fileID: 0}
+  dribleSFX: {fileID: 0}
+  dribbleVolume: 1
 --- !u!114 &1016341045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2425,6 +2428,7 @@ MonoBehaviour:
   timerText: {fileID: 1407595765}
   timerObjectOffset: 100
   timerMoveInSpeed: 100
+  respawnTime: 2
   endGameUI: {fileID: 48922700}
 --- !u!4 &1358394500
 Transform:

@@ -113,15 +113,15 @@ public class EndScreen : MonoBehaviour {
 
         if (!doOnce)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (InputManager.GetButtonDown(GameControls.Jump, 0))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-
-            }
+            //if (InputManager.GetButtonDown(GameControls.FillWater, 0))
+            //{
+           //  //   SceneManager.LoadScene(0);
+            //}
         }
 
 

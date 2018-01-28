@@ -45,6 +45,7 @@ public class ReceiveDamage : MonoBehaviour, IHittable
         hitamount++;
         if (hitamount > numeberOfHitsbeforeReSpawn)
         {
+            container.RemoveHardAmount(200);
             hitamount = 0;
             if(GameManager.Exist)
                             GameManager.Instance().RespawnPlayer(gameObject.transform.parent.gameObject);

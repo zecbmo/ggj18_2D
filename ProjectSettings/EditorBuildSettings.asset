@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/StartScene.unity
     guid: d5744d5e3d7ad0f4a953290dbfb7a546
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Pablo.unity
     guid: 54cd7a882e54b1048906f8f6f40e746a
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Ruben.unity
     guid: b105a4c0a3abe2040813e6cebc4bafb8
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/GarysScene2.unity
     guid: 2ab4e30f5097f1c4cbbef7cef5e10ae8
   - enabled: 1

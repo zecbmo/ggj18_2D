@@ -28,7 +28,7 @@ public class StartScreen : MonoBehaviour
                 break;
             }*/
 
-            if (InputManager.GetButtonDown(GameControls.Sprint, i)) // A button (?)
+            if (InputManager.GetButtonDown(GameControls.Jump, i)) // A button (?)
             {
                 // Go to scene and assign player 1 to controller i
                 // Debug.Log("GO Team " + hoveredTeam.ToString());

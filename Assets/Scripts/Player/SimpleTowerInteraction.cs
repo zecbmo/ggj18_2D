@@ -46,8 +46,13 @@ public class SimpleTowerInteraction : MonoBehaviour
                     {
                         if (container.GetPercentageFilled() >= 99)
                         {
+                            playSFX = true;
+                            collisionObject.ResetWaterAnim();
+                            container.fluidBeingRemoved = false;
                             return;
                         }
+
+
                         container.AddFluid(5);
                         collisionObject.RemoveWater(5);
                         container.fluidBeingRemoved = false;
@@ -61,6 +66,12 @@ public class SimpleTowerInteraction : MonoBehaviour
                     break;
                 case WhatCollisonType.AddingWater:
                     {
+                        if (container.GetPercentageFilled() <= 0)
+                        {
+                            return;
+                            container.fluidBeingRemoved = false;
+                        }
+
                         collisionObject.AddWater(5);
                         container.RemoveFluid(5);
                         container.fluidBeingRemoved = true;
