@@ -21,14 +21,14 @@ public class StartScreen : MonoBehaviour
     {
         for (int i = 0; i < PlayerManager.Instance().GetNoControllers(); ++i)
         {
-            float horizontalAxis = InputManager.GetAxis(AxisControls.Horizontal, i);
+            /*float horizontalAxis = InputManager.GetAxis(AxisControls.Horizontal, i);
             if (horizontalAxis != 0)
             {
                 UpdateController(horizontalAxis > 0 ? Team.Blue : Team.Red);
                 break;
-            }
+            }*/
 
-            if (hoveredTeam != Team.None && InputManager.GetButtonDown(GameControls.Sprint, i)) // A button (?)
+            if (InputManager.GetButtonDown(GameControls.Sprint, i)) // A button (?)
             {
                 // Go to scene and assign player 1 to controller i
                 // Debug.Log("GO Team " + hoveredTeam.ToString());
@@ -41,7 +41,7 @@ public class StartScreen : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene("GarysScene2");
+            SceneManager.LoadScene("TestScene");
         }
 
     }

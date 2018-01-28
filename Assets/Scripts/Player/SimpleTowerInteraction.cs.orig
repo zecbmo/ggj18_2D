@@ -14,6 +14,7 @@ public class SimpleTowerInteraction : MonoBehaviour
     enum WhatCollisonType { RemovingWater, AddingWater };
     WhatCollisonType type = WhatCollisonType.RemovingWater;
 
+<<<<<<< HEAD
     MarioMovement player;
 
     [SerializeField]
@@ -28,13 +29,23 @@ public class SimpleTowerInteraction : MonoBehaviour
     private void Start()
     {
         player = GetComponent<MarioMovement>();
+=======
+    private void Start()
+    {
+        marioMovement = GetComponent<MarioMovement>();
+        Assert.IsNotNull(marioMovement);
+>>>>>>> origin/player
     }
 
     private void Update()
     {
+<<<<<<< HEAD
         dribleSFX.volume = 0;
 
         if (collisionObject && InputManager.GetButton(GameControls.FillWater, player.controllerId))
+=======
+        if (collisionObject && InputManager.GetButton(GameControls.FillWater, marioMovement.GetControllerId()))
+>>>>>>> origin/player
         {
             dribleSFX.volume = AudioManager.Instance().MasterVolume * AudioManager.Instance().SXFVolume * dribbleVolume;
 
@@ -45,12 +56,15 @@ public class SimpleTowerInteraction : MonoBehaviour
                         container.AddFluid(5);
                         collisionObject.RemoveWater(5);
                         container.fluidBeingRemoved = false;
+<<<<<<< HEAD
                         if (playSFX)
                         {
                             AudioManager.Instance().PlaySFX(bubbleSFX, 0.2f);
                             playSFX = false;
                         }
                                            
+=======
+>>>>>>> origin/player
                     }
                     break;
                 case WhatCollisonType.AddingWater:
@@ -65,8 +79,11 @@ public class SimpleTowerInteraction : MonoBehaviour
                     break;
             }
 
+<<<<<<< HEAD
            
 
+=======
+>>>>>>> origin/player
         }
         else if (collisionObject)
         {

@@ -717,7 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doNotDestoryOnLoad: 1
   noControllers: 4
-  playerPrefab: {fileID: 1630082059850230, guid: 9c11f0e9b414d9c4295f92c14f83e5ed,
+  playerPrefab: {fileID: 1338434389274800, guid: 7cae5551b57220b468ff714bb1227e4d,
     type: 2}
   waitingNewPlayers: 0
   skip: 0

@@ -65,9 +65,14 @@ public class MeleeAttack : MonoBehaviour
     {
         if (!attacking && !attackOnCooldown && marioMovement.GetCanMoveCharacter())
         {
+<<<<<<< HEAD
             AudioManager.Instance().PlaySFX(punchAttemptSFX, punchSFXModulation);
+            weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
+            transform.localPosition = weaponPosition;
+=======
             this.transform.localScale = marioMovement.IsLookingRight() == true ? originalScale : mirroredScale;
 
+>>>>>>> origin/player
             StartCoroutine(MeleeAttackCoroutine());
             StartCoroutine(MeleeAttackCooldown(meleeAttackCooldown));
         }

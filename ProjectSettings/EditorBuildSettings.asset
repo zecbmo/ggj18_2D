@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/GarysScene2.unity
     guid: 2ab4e30f5097f1c4cbbef7cef5e10ae8
+  - enabled: 1
+    path: Assets/_Scenes/TestScene.unity
+    guid: 735e7ef60009e184c8360366468df93c
