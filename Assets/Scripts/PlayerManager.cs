@@ -68,6 +68,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public List<GameObject> SpawnPlayers()
     {
+
+        waitingNewPlayers = false;
         List<GameObject> returnList = new List<GameObject>();
 
         for (int i = 0; i < availablePlayerId; ++i)

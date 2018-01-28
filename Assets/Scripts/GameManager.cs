@@ -15,6 +15,18 @@ public class GameManager : Singleton<GameManager>
     float gameStartDelay = 3.0f;
     float startDelayDivided = 0.0f;
 
+    [Header("TeamColors")]
+    [SerializeField]
+    Color redColourOne = Color.red;
+    [SerializeField]
+    Color redColourTwo = Color.red;
+    [SerializeField]
+    Color blueColourOne = Color.blue;
+    [SerializeField]
+    Color blueColourTwo = Color.blue;
+
+
+
     [Header("In Game Settings")]
     [SerializeField]
     float gameLength = 180.0f;
@@ -65,11 +77,18 @@ public class GameManager : Singleton<GameManager>
         startDelayDivided = gameStartDelay / 3.0f;
         StartCoroutine(ChangeIntroTextAndRepeat(startingText, startDelayDivided, 0));
 
-        PlayerManager.Instance().SpawnPlayers();
+        List<GameObject> newPlayers =  PlayerManager.Instance().SpawnPlayers();
 
 
     }
-	
+
+    void SetUpTeams(List<GameObject> players)
+    {
+
+    }
+
+
+
 	// Update is called once per frame
 	void Update ()
     {
