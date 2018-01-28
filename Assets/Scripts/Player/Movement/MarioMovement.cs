@@ -112,6 +112,8 @@ public class MarioMovement : MonoBehaviour
     /// </summary>
     private BoxCollider2D boxCollider = null;
 
+    private CharacterAnimatorController animatorController = null;
+
 
     private void Awake()
     {
@@ -120,6 +122,9 @@ public class MarioMovement : MonoBehaviour
 
         boxCollider = GetComponent<BoxCollider2D>();
         Assert.IsNotNull(boxCollider);
+
+        animatorController = GetComponentInChildren<CharacterAnimatorController>();
+        Assert.IsNotNull(animatorController);
 
         originalGravity = rigidBody.gravityScale;
     }
@@ -140,6 +145,7 @@ public class MarioMovement : MonoBehaviour
             jumping = true;
             jumped = true;
             jumpTimestamp = Time.time;
+            animatorController.TriggerJump();
         }
 
         if (jumpButtonUp || (Time.time - jumpTimestamp) > extraJumpTime)
@@ -406,6 +412,16 @@ public class MarioMovement : MonoBehaviour
     public bool GetCanMoveCharacter()
     {
         return canMoveCharacter;
+    }
+
+
+    public bool IsWallSliding() {
+        return wallSliding;
+    }
+
+
+    public float GetRigidBodyVelocity() {
+        return rigidBody.velocity.x;
     }
 
     /*
