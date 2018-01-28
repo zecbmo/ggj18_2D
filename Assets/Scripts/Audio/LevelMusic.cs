@@ -9,6 +9,7 @@ public class LevelMusic : MonoBehaviour
 
     private void Start()
     {
+        if(levelMusic != null)
         AudioManager.Instance().PlayBackgroundMusic(levelMusic);
     }
 }

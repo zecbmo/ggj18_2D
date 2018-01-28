@@ -121,11 +121,11 @@ MonoBehaviour:
         neutralWhiteClip: 10
       basic:
         postExposure: 0
-        temperature: 20
-        tint: 0
+        temperature: 22
+        tint: -2
         hueShift: 0
-        saturation: 0.83
-        contrast: 0.99
+        saturation: 1.4
+        contrast: 0.7
       channelMixer:
         red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
@@ -284,23 +284,23 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.922
+      intensity: 0.358
   grain:
     m_Enabled: 1
     m_Settings:
       colored: 1
-      intensity: 0.868
-      size: 1.21
-      luminanceContribution: 0.925
+      intensity: 0.168
+      size: 0.97
+      luminanceContribution: 0.593
   vignette:
     m_Enabled: 1
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.579
-      smoothness: 0.824
-      roundness: 0.099
+      intensity: 0.504
+      smoothness: 1
+      roundness: 0.701
       mask: {fileID: 0}
       opacity: 1
       rounded: 0
