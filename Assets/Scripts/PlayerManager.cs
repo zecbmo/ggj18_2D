@@ -19,6 +19,9 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField, Tooltip("for use when testing the main scene")]
     bool skip = false;
 
+    [SerializeField]
+    AudioClip playerJoinsSFX = null;
+
     private void Start()
     {
         if(skip)
@@ -61,6 +64,7 @@ public class PlayerManager : Singleton<PlayerManager>
                 {
                     GameObject go = Instantiate(playerPrefab);
                     go.GetComponent<MarioMovement>().SetPlayerId(EnterNewPlayer(i));
+                    AudioManager.Instance().PlaySFX(playerJoinsSFX);
                 }
             }
         }

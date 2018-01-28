@@ -80,6 +80,31 @@ public class MarioMovement : MonoBehaviour
     private bool wallSliding = false;
     private bool wallToTheRight = true;
 
+    [Header("Player SFX")]
+    [SerializeField]
+    AudioClip jumpSFX = null;
+    [SerializeField]
+    AudioClip hitSFX = null;
+    [SerializeField]
+    AudioClip moveSFX = null;
+    [SerializeField]
+    AudioClip fillingWaterSFX = null;
+    [SerializeField]
+    AudioClip loosingWaterSFX = null;
+
+    [Header("SFX Settings")]
+    [SerializeField]
+    float jumpModulation = 0.2f;
+    [SerializeField]
+    float hitModulation = 0.2f;
+    [SerializeField]
+    float moveVolume = 0.5f;
+
+    [Header("Self Audio Source")]
+    [SerializeField]
+    AudioSource audio = null;
+
+
     /*
      
      @@DOING: Apply a force up and out from the wall
@@ -96,7 +121,7 @@ public class MarioMovement : MonoBehaviour
     [SerializeField]
     private int playerId = 0;
 
-    private int controllerId = -1;
+    public int controllerId = -1;
 
 
     private bool inKnockback = false;
@@ -160,6 +185,9 @@ public class MarioMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        ///reset movement sounds
+        audio.volume = 0;
+
         if (controllerId < 0)
         {
             controllerId = PlayerManager.Instance().GetControllerByPlayerId(playerId);
@@ -233,6 +261,11 @@ public class MarioMovement : MonoBehaviour
                 {   // --- Normal Movement ---
                     rigidBody.velocity = new Vector2(horizontalInput * movementSpeed * Time.deltaTime, rigidBody.velocity.y);
                 }
+
+                if (grounded)
+                {
+                    audio.volume = Mathf.Abs(horizontalInput) * AudioManager.Instance().MasterVolume * AudioManager.Instance().SXFVolume * moveVolume;
+                }
             }
         }
         else
@@ -265,7 +298,7 @@ public class MarioMovement : MonoBehaviour
             wallJumpTimeStamp = Time.time;
 
             wallJumpedRight = !wallToTheRight;
-
+            AudioManager.Instance().PlaySFX(jumpSFX, jumpModulation);
             rigidBody.AddForce(new Vector2(0 /*(lookingRight) ? -wallJumpSideForce : wallJumpSideForce*/, wallJumpUpForce));
             jumped = false;
         }
@@ -275,7 +308,7 @@ public class MarioMovement : MonoBehaviour
              We add the initial jumping force, this is the
              "real" jump, the initial one.
              */
-
+            AudioManager.Instance().PlaySFX(jumpSFX, jumpModulation);
             rigidBody.AddForce(new Vector2(0, initialJumpForce));
             jumped = false;
         }

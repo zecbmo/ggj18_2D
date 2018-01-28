@@ -12,6 +12,8 @@ public class ReceiveDamage : MonoBehaviour, IHittable
     private Vector2 knockbackForce = Vector2.zero;
     [SerializeField]
     private float knockbackTime = 0f;
+    [SerializeField]
+    AudioClip HitSFX = null;
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class ReceiveDamage : MonoBehaviour, IHittable
 
     public void OnHit(GameObject otherObject)
     {
+        AudioManager.Instance().PlaySFX(HitSFX, 0.2f);
         marioMovement.ApplyKnockback(new Vector2((otherObject.transform.position.x > this.transform.position.x)
             ? -knockbackForce.x : knockbackForce.x, knockbackForce.y),
             knockbackTime);

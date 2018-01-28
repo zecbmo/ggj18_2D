@@ -12,6 +12,11 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField]
     float meleeAttackCooldown;
 
+    [SerializeField]
+    AudioClip punchAttemptSFX = null;
+
+    [SerializeField]
+    float punchSFXModulation = 0.2f;
 
     Collider2D meleeAttackCollider;
     SpriteRenderer weaponSpriteRenderer;
@@ -54,6 +59,7 @@ public class MeleeAttack : MonoBehaviour
     {
         if (!attacking && !attackOnCooldown && marioMovement.GetCanMoveCharacter())
         {
+            AudioManager.Instance().PlaySFX(punchAttemptSFX, punchSFXModulation);
             weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
             transform.localPosition = weaponPosition;
             StartCoroutine(MeleeAttackCoroutine());
