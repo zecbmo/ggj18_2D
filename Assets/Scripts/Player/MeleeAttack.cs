@@ -14,19 +14,23 @@ public class MeleeAttack : MonoBehaviour
 
 
     Collider2D meleeAttackCollider;
-    SpriteRenderer weaponSpriteRenderer;
+    MeshRenderer weaponMeshRenderer;
     MarioMovement marioMovement;
     Vector2 weaponPosition;
     bool attackOnCooldown = false;
     bool attacking;
+
+    private Vector3 originalScale;
+    private Vector3 mirroredScale;
+
 
     void Awake()
     {
         meleeAttackCollider = GetComponent<Collider2D>();
         Assert.IsNotNull(meleeAttackCollider);
 
-        weaponSpriteRenderer = GetComponent<SpriteRenderer>();
-        Assert.IsNotNull(weaponSpriteRenderer);
+        weaponMeshRenderer = GetComponentInChildren<MeshRenderer>();
+        Assert.IsNotNull(weaponMeshRenderer);
 
         marioMovement = transform.parent.GetComponent<MarioMovement>();
         Assert.IsNotNull(marioMovement);
@@ -34,8 +38,10 @@ public class MeleeAttack : MonoBehaviour
 
     void Start()
     {
-        weaponSpriteRenderer.enabled = false;
+        weaponMeshRenderer.enabled = false;
         weaponPosition = transform.localPosition;
+        originalScale = this.transform.localScale;
+        mirroredScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
     }
 
     void Update()
@@ -54,8 +60,8 @@ public class MeleeAttack : MonoBehaviour
     {
         if (!attacking && !attackOnCooldown && marioMovement.GetCanMoveCharacter())
         {
-            weaponPosition.x = marioMovement.IsLookingRight() == true ? Mathf.Abs(weaponPosition.x) : -Mathf.Abs(weaponPosition.x);
-            transform.localPosition = weaponPosition;
+            this.transform.localScale = marioMovement.IsLookingRight() == true ? originalScale : mirroredScale;
+
             StartCoroutine(MeleeAttackCoroutine());
             StartCoroutine(MeleeAttackCooldown(meleeAttackCooldown));
         }
@@ -72,14 +78,14 @@ public class MeleeAttack : MonoBehaviour
     {
         // Enable melee collider
         meleeAttackCollider.enabled = true;
-        weaponSpriteRenderer.enabled = true;
+        weaponMeshRenderer.enabled = true;
         attacking = true;
 
         yield return new WaitForSeconds(meleeAttackDuration);
 
         // Disable it after the duration
         meleeAttackCollider.enabled = false;
-        weaponSpriteRenderer.enabled = false;
+        weaponMeshRenderer.enabled = false;
         attacking = false;
     }
 
