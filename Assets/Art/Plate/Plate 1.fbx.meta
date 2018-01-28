@@ -1,13 +1,12 @@
 fileFormatVersion: 2
-guid: b45f4eb342fad0e43a2cb653e6dfac52
-timeCreated: 1517090771
+guid: 12366bf6572dc9c4b8216318e57de544
+timeCreated: 1517094264
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: lambert1
     2300000: //RootNode
     3300000: //RootNode
     4300000: Plate
